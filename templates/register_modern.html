@@ -1,0 +1,848 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+/* モダンなWebアプリ風スタイル */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+/* ヘッダー */
+.header {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+}
+
+/* メインコンテンツ */
+.main-content {
+    padding: 30px;
+}
+
+/* セクションスタイル */
+.section {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.section-header {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white;
+    padding: 12px 20px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.section-content {
+    padding: 20px;
+}
+
+/* グリッドシステム */
+.form-grid {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.grid-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 120px 1fr 120px 1fr;
+    gap: 15px;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* フォーム要素 */
+.form-input, .form-select, .form-textarea {
+    padding: 8px 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+/* ラジオボタンとチェックボックス */
+.radio-group, .checkbox-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.radio-item, .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.radio-item:hover, .checkbox-item:hover {
+    background-color: #f8f9fa;
+}
+
+.radio-item input, .checkbox-item input {
+    width: 16px;
+    height: 16px;
+    accent-color: #667eea;
+}
+
+/* 付番ボタン */
+.fuban-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.fuban-input {
+    flex: 1;
+}
+
+.fuban-btn {
+    padding: 8px 12px;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.fuban-btn:hover {
+    transform: translateY(-1px);
+}
+
+/* 4カラムレイアウト */
+.four-column-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* 変更内容グリッド */
+.change-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.change-item {
+    padding: 8px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    background: white;
+}
+
+/* 詳細セクションのテーブル風レイアウト */
+.detail-table {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.detail-column {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.detail-header {
+    background: linear-gradient(135deg, #6f42c1 0%, #e83e8c 100%);
+    color: white;
+    padding: 10px 15px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 14px;
+}
+
+.detail-content {
+    padding: 15px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-size: 13px;
+    color: #6c757d;
+    font-weight: 500;
+    min-width: 80px;
+}
+
+.detail-input {
+    padding: 4px 8px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 13px;
+    width: 100px;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1200px) {
+    .four-column-layout {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .detail-table {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .four-column-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .detail-table {
+        grid-template-columns: 1fr;
+    }
+    
+    .radio-group, .checkbox-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+/* カード風エフェクト */
+.card-effect {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.card-effect:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+}
+
+/* アニメーション */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease forwards;
+}
+
+/* 大きなテキストエリア */
+.large-textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+}
+
+.large-textarea:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    outline: none;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container fade-in">
+    <form method="POST" action="{{ url_for('register') }}">
+        <!-- ヘッダー -->
+        <div class="header">
+            <h1>変化点管理台帳 登録</h1>
+            <div class="header-buttons">
+                <button type="submit" class="btn btn-primary">登録実行</button>
+                <button type="button" class="btn btn-secondary" onclick="window.close()">閉じる</button>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <!-- 基本情報セクション -->
+            <div class="section card-effect">
+                <div class="section-header">基本情報</div>
+                <div class="section-content">
+                    <div class="grid-row">
+                        <div class="form-group">
+                            <label class="form-label">工務受付No</label>
+                            <input type="text" name="komu_uketsuke_no" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">変化点№</label>
+                            <div class="fuban-container">
+                                <input type="text" name="henkaiten_no" class="form-input fuban-input">
+                                <button type="button" class="fuban-btn">付番</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">特別実施項目</label>
+                            <input type="text" name="tokubetsu_jisshi_komoku" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <div class="grid-row">
+                        <div class="form-group">
+                            <label class="form-label">工務区分</label>
+                            <div class="radio-group">
+                                <label class="radio-item"><input type="radio" name="komu_kubun" value="部品"> 部品</label>
+                                <label class="radio-item"><input type="radio" name="komu_kubun" value="製品"> 製品</label>
+                                <label class="radio-item"><input type="radio" name="komu_kubun" value="海外"> 海外</label>
+                                <label class="radio-item"><input type="radio" name="komu_kubun" value="計画"> 計画</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">連絡書№</label>
+                            <input type="text" name="renraku_sho_no" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">返却日</label>
+                            <input type="date" name="henkyaku_bi" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <div class="grid-row">
+                        <div class="form-group">
+                            <label class="form-label">起票部署</label>
+                            <select name="kippu_busho" class="form-select">
+                                <option value=""></option>
+                                <option value="TDK(株)">TDK(株)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">担当者</label>
+                            <select name="tantousha" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">返却内容</label>
+                            <textarea name="henkyaku_naiyou" class="form-textarea" rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="grid-row">
+                        <div class="form-group">
+                            <label class="form-label">品番</label>
+                            <input type="text" name="hinban" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">工変ランク</label>
+                            <select name="kouhen_rank" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">品質カルテ減点対象外</label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="hinshitsu_karute_genten_taishougai">
+                                対象外
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="grid-row">
+                        <div class="form-group">
+                            <label class="form-label">品名</label>
+                            <input type="text" name="hinmei" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">工務備考</label>
+                            <input type="text" name="komu_bikou" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">TEL</label>
+                            <input type="text" name="tel" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <div class="grid-row">
+                        <div class="form-group">
+                            <label class="form-label">客先提出要否</label>
+                            <div class="radio-group">
+                                <label class="radio-item"><input type="radio" name="kyakusaki_teishutsu_youhi" value="要"> 要</label>
+                                <label class="radio-item"><input type="radio" name="kyakusaki_teishutsu_youhi" value="否"> 否</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">管轄</label>
+                            <div class="radio-group">
+                                <label class="radio-item"><input type="radio" name="kankatsu" value="SW"> SW</label>
+                                <label class="radio-item"><input type="radio" name="kankatsu" value="EL"> EL</label>
+                                <label class="radio-item"><input type="radio" name="kankatsu" value="ME"> ME</label>
+                                <label class="radio-item"><input type="radio" name="kankatsu" value="ELD"> ELD</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">メール</label>
+                            <input type="email" name="email" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <div class="grid-row">
+                        <div class="form-group">
+                            <label class="form-label">特殊工程有無</label>
+                            <div class="radio-group">
+                                <label class="radio-item"><input type="radio" name="tokushu_koutei_umu" value="有"> 有</label>
+                                <label class="radio-item"><input type="radio" name="tokushu_koutei_umu" value="無"> 無</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- メイン4カラムセクション -->
+            <div class="four-column-layout">
+                <!-- 設変セクション -->
+                <div class="section card-effect">
+                    <div class="section-header">設変</div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label class="form-label">設変№</label>
+                            <input type="text" name="setsuhen_no" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">設変区分</label>
+                            <select name="setsuhen_kubun" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">出図予定日</label>
+                            <input type="date" name="shutsuzu_yotei_bi" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">出図実績日</label>
+                            <input type="date" name="shutsuzu_jisseki_bi" class="form-input">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 変更内容セクション -->
+                <div class="section card-effect">
+                    <div class="section-header">変更内容</div>
+                    <div class="section-content">
+                        <div class="change-grid">
+                            <label class="checkbox-item"><input type="checkbox" name="henkou_naiyou" value="設備"> 1.設備</label>
+                            <label class="checkbox-item"><input type="checkbox" name="henkou_naiyou" value="検査機器"> 2.検査機器</label>
+                            <label class="checkbox-item"><input type="checkbox" name="henkou_naiyou" value="金型"> 3.金型</label>
+                            <label class="checkbox-item"><input type="checkbox" name="henkou_naiyou" value="治工具"> 4.治工具</label>
+                            <label class="checkbox-item"><input type="checkbox" name="henkou_naiyou" value="製造条件"> 5.製造条件</label>
+                            <label class="checkbox-item"><input type="checkbox" name="henkou_naiyou" value="工程"> 6.工程</label>
+                            <label class="checkbox-item"><input type="checkbox" name="henkou_naiyou" value="製造場所"> 7.製造場所</label>
+                            <label class="checkbox-item"><input type="checkbox" name="henkou_naiyou" value="材料"> 8.材料</label>
+                            <label class="checkbox-item"><input type="checkbox" name="henkou_naiyou" value="副資材"> 9.副資材</label>
+                            <label class="checkbox-item"><input type="checkbox" name="henkou_naiyou" value="その他"> 10.その他</label>
+                            <label class="checkbox-item"><input type="checkbox" name="henkou_naiyou" value="物流"> 11.物流</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">変更内容詳細</label>
+                            <textarea name="henkou_naiyou_detail" class="large-textarea" placeholder="変更内容の詳細を入力してください"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 日程管理セクション -->
+                <div class="section card-effect">
+                    <div class="section-header">日程管理</div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label class="form-label">起票日</label>
+                            <input type="date" name="kippu_bi" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">工務受付日</label>
+                            <input type="date" name="komu_uketsuke_bi" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">品管受付日</label>
+                            <input type="date" name="hinkan_uketsuke_bi" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">承認日付</label>
+                            <input type="date" name="shounin_hiduke" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">配布日</label>
+                            <input type="date" name="haifu_bi" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">取り消し日</label>
+                            <input type="date" name="torikeshi_bi" class="form-input">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- フリー入力セクション -->
+                <div class="section card-effect">
+                    <div class="section-header">フリー入力</div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label class="form-label">(1)</label>
+                            <input type="text" name="free_nyuryoku_1" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">(2)</label>
+                            <input type="text" name="free_nyuryoku_2" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">(3)</label>
+                            <input type="text" name="free_nyuryoku_3" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">(4)</label>
+                            <input type="text" name="free_nyuryoku_4" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">備考</label>
+                            <textarea name="bikou" class="form-textarea" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 詳細5カラムセクション -->
+            <div class="detail-table">
+                <!-- 部品 -->
+                <div class="detail-column card-effect">
+                    <div class="detail-header">部品</div>
+                    <div class="detail-content">
+                        <div class="form-group">
+                            <label class="form-label">評価有無</label>
+                            <div class="radio-group">
+                                <label class="radio-item"><input type="radio" name="buhin_hyouka_umu" value="有"> 有</label>
+                                <label class="radio-item"><input type="radio" name="buhin_hyouka_umu" value="無"> 無</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">サンプル</label>
+                            <select name="buhin_sample" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">データ</label>
+                            <select name="buhin_data" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">工程能力</label>
+                            <select name="buhin_koutei_nouryoku" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">試組</label>
+                            <select name="buhin_shigumi" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">試験</label>
+                            <select name="buhin_shiken" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">全型PP</label>
+                            <select name="buhin_zenkata_pp" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 製品 -->
+                <div class="detail-column card-effect">
+                    <div class="detail-header">製品</div>
+                    <div class="detail-content">
+                        <div class="form-group">
+                            <label class="form-label">評価有無</label>
+                            <div class="radio-group">
+                                <label class="radio-item"><input type="radio" name="seihin_hyouka_umu" value="有"> 有</label>
+                                <label class="radio-item"><input type="radio" name="seihin_hyouka_umu" value="無"> 無</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">サンプル</label>
+                            <select name="seihin_sample" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">データ</label>
+                            <select name="seihin_data" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">工程能力</label>
+                            <select name="seihin_koutei_nouryoku" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">試組</label>
+                            <select name="seihin_shigumi" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">試験</label>
+                            <select name="seihin_shiken" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 工程確認 -->
+                <div class="detail-column card-effect">
+                    <div class="detail-header">工程確認</div>
+                    <div class="detail-content">
+                        <div class="form-group">
+                            <label class="form-label">B工程要否</label>
+                            <div class="radio-group">
+                                <label class="radio-item"><input type="radio" name="b_koutei_youhi" value="有"> 有</label>
+                                <label class="radio-item"><input type="radio" name="b_koutei_youhi" value="無"> 無</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">旧予定日</label>
+                            <input type="date" name="kyuu_yotei_bi" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">旧実施日</label>
+                            <input type="date" name="kyuu_jisshi_bi" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">新予定日</label>
+                            <input type="date" name="shin_yotei_bi" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">新実施日</label>
+                            <input type="date" name="shin_jisshi_bi" class="form-input">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 流動可否 -->
+                <div class="detail-column card-effect">
+                    <div class="detail-header">流動可否</div>
+                    <div class="detail-content">
+                        <div class="form-group">
+                            <label class="form-label">流動可否</label>
+                            <select name="ryuudou_kahi" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">提出期限</label>
+                            <input type="date" name="teishutsu_kigen" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">状態</label>
+                            <select name="joutai" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">受領日</label>
+                            <input type="date" name="juryou_bi" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">承認日</label>
+                            <input type="date" name="ryuudou_shounin_bi" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">仮承認日</label>
+                            <input type="date" name="kari_shounin_bi" class="form-input">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 初品納入 -->
+                <div class="detail-column card-effect">
+                    <div class="detail-header">初品納入</div>
+                    <div class="detail-content">
+                        <div class="form-group">
+                            <label class="form-label">予定日</label>
+                            <input type="date" name="shohin_yotei_bi" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">変更日</label>
+                            <input type="date" name="shohin_henkou_bi" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">変化点納入リスト</label>
+                            <textarea name="henkaiten_nounyuu_list" class="large-textarea" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// フォームバリデーション
+document.querySelector('form').addEventListener('submit', function(e) {
+    const henkatienNo = document.querySelector('input[name="henkaiten_no"]').value.trim();
+    
+    if (!henkatienNo) {
+        alert('変化点№は必須です。');
+        e.preventDefault();
+        return;
+    }
+    
+    if (confirm('登録してもよろしいですか？')) {
+        // 登録処理継続
+    } else {
+        e.preventDefault();
+    }
+});
+
+// 付番ボタンの機能
+document.querySelector('.fuban-btn').addEventListener('click', function() {
+    const now = new Date();
+    const timestamp = now.getFullYear().toString().slice(-2) + 
+                     String(now.getMonth() + 1).padStart(2, '0') + 
+                     String(now.getDate()).padStart(2, '0') + 
+                     String(now.getHours()).padStart(2, '0') + 
+                     String(now.getMinutes()).padStart(2, '0');
+    
+    const henkatienNo = document.querySelector('input[name="henkaiten_no"]');
+    if (!henkatienNo.value.trim()) {
+        henkatienNo.value = 'HPC' + timestamp;
+    }
+});
+
+// アニメーション効果
+document.addEventListener('DOMContentLoaded', function() {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach((section, index) => {
+        setTimeout(() => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'all 0.6s ease';
+            
+            setTimeout(() => {
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+            }, 100);
+        }, index * 100);
+    });
+});
+</script>
+{% endblock %}
