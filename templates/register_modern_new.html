@@ -1323,6 +1323,9 @@ function changeStep(direction) {
     document.getElementById('prevBtn').style.display = currentStep === 1 ? 'none' : 'block';
     document.getElementById('nextBtn').style.display = currentStep === totalSteps ? 'none' : 'block';
     document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'block' : 'none';
+    
+    // ページの先頭に即座に移動
+    window.scrollTo(0, 0);
 }
 
 // フォーム送信バリデーション
