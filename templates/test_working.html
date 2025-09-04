@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>変化点管理台帳 - 動作確認版</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            margin: 0;
+            padding: 15px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+            color: white;
+            padding: 15px 25px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .progress {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            background: #f5f5f5;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .progress-step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .progress-step.active {
+            background: #2196f3;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .progress-step.completed {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .progress-line {
+            width: 60px;
+            height: 2px;
+            background: #e0e0e0;
+            transition: all 0.3s;
+        }
+        
+        .progress-line.completed {
+            background: #4caf50;
+        }
+        
+        .main-content {
+            padding: 20px;
+            min-height: 500px;
+            position: relative;
+        }
+        
+        .step-container {
+            display: none;
+            padding: 20px;
+        }
+        
+        .step-container.active {
+            display: block !important;
+        }
+        
+        .step-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .section {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+        
+        .section-header {
+            background: #1976d2;
+            color: white;
+            margin: -15px -15px 15px -15px;
+            padding: 10px 15px;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .form-input, .form-select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 10px 0;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+            resize: vertical;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-prev {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-next {
+            background: #2196f3;
+            color: white;
+        }
+        
+        .btn-submit {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .four-column {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            変化点管理台帳 登録
+        </div>
+        
+        <div class="progress">
+            <div class="progress-step active" id="prog-1">1</div>
+            <div class="progress-line" id="line-1"></div>
+            <div class="progress-step" id="prog-2">2</div>
+            <div class="progress-line" id="line-2"></div>
+            <div class="progress-step" id="prog-3">3</div>
+        </div>
+        
+        <form id="mainForm">
+            <div class="main-content">
+                <!-- ステップ 1: 基本情報 -->
+                <div class="step-container active" id="step-1">
+                    <div class="step-title">ステップ 1: 基本情報</div>
+                    
+                    <div class="section">
+                        <div class="section-header">基本情報</div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">工務受付No</label>
+                                <input type="text" class="form-input" name="komu_uketsuke_no">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">変化点№</label>
+                                <div style="display: flex; gap: 5px;">
+                                    <input type="text" class="form-input" name="henkaiten_no" style="flex: 1;">
+                                    <button type="button" class="btn" style="background: #42a5f5; color: white;">付番</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">特別実施項目</label>
+                                <input type="text" class="form-input" name="tokubetsu_jisshi_komoku">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">工務区分</label>
+                                <div class="radio-group">
+                                    <label class="radio-item"><input type="radio" name="komu_kubun" value="部品"> 部品</label>
+                                    <label class="radio-item"><input type="radio" name="komu_kubun" value="製品"> 製品</label>
+                                    <label class="radio-item"><input type="radio" name="komu_kubun" value="海外"> 海外</label>
+                                    <label class="radio-item"><input type="radio" name="komu_kubun" value="計画"> 計画</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">連絡書№</label>
+                                <input type="text" class="form-input" name="renraku_sho_no">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">返却日</label>
+                                <input type="date" class="form-input" name="henkyaku_bi">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">品番</label>
+                                <input type="text" class="form-input" name="hinban">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">品名</label>
+                                <input type="text" class="form-input" name="hinmei">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">工変ランク</label>
+                                <select class="form-select" name="kouhen_rank">
+                                    <option value="">選択してください</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">返却内容</label>
+                            <textarea name="henkyaku_naiyou" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ステップ 2: 詳細情報 -->
+                <div class="step-container" id="step-2">
+                    <div class="step-title">ステップ 2: 詳細情報</div>
+                    
+                    <div class="four-column">
+                        <!-- 設変セクション -->
+                        <div class="section">
+                            <div class="section-header">設変</div>
+                            <div class="form-group">
+                                <label class="form-label">設変№</label>
+                                <input type="text" class="form-input" name="setsuhen_no">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">設変区分</label>
+                                <select class="form-select" name="setsuhen_kubun">
+                                    <option value="">選択</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">出図予定日</label>
+                                <input type="date" class="form-input" name="shutsuzu_yotei_bi">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">出図実績日</label>
+                                <input type="date" class="form-input" name="shutsuzu_jisseki_bi">
+                            </div>
+                        </div>
+                        
+                        <!-- 変更内容セクション -->
+                        <div class="section">
+                            <div class="section-header">変更内容</div>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-item"><input type="checkbox" name="henkou" value="設備"> 1.設備</label>
+                                <label class="checkbox-item"><input type="checkbox" name="henkou" value="検査機器"> 2.検査機器</label>
+                                <label class="checkbox-item"><input type="checkbox" name="henkou" value="金型"> 3.金型</label>
+                                <label class="checkbox-item"><input type="checkbox" name="henkou" value="治工具"> 4.治工具</label>
+                                <label class="checkbox-item"><input type="checkbox" name="henkou" value="製造条件"> 5.製造条件</label>
+                                <label class="checkbox-item"><input type="checkbox" name="henkou" value="工程"> 6.工程</label>
+                                <label class="checkbox-item"><input type="checkbox" name="henkou" value="製造場所"> 7.製造場所</label>
+                                <label class="checkbox-item"><input type="checkbox" name="henkou" value="材料"> 8.材料</label>
+                            </div>
+                            <textarea name="henkou_detail" rows="3" placeholder="変更内容詳細"></textarea>
+                        </div>
+                        
+                        <!-- 日程管理 -->
+                        <div class="section">
+                            <div class="section-header">日程管理</div>
+                            <div class="form-group">
+                                <label class="form-label">起票日</label>
+                                <input type="date" class="form-input" name="kippu_bi">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">工務受付日</label>
+                                <input type="date" class="form-input" name="komu_uketsuke_bi">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">承認日付</label>
+                                <input type="date" class="form-input" name="shounin_hiduke">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">配布日</label>
+                                <input type="date" class="form-input" name="haifu_bi">
+                            </div>
+                        </div>
+                        
+                        <!-- フリー入力 -->
+                        <div class="section">
+                            <div class="section-header">フリー入力</div>
+                            <div class="form-group">
+                                <label class="form-label">フリー入力1</label>
+                                <input type="text" class="form-input" name="free_1">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">フリー入力2</label>
+                                <input type="text" class="form-input" name="free_2">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">フリー入力3</label>
+                                <input type="text" class="form-input" name="free_3">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">フリー入力4</label>
+                                <input type="text" class="form-input" name="free_4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ステップ 3: 備考・最終確認 -->
+                <div class="step-container" id="step-3">
+                    <div class="step-title">ステップ 3: 備考・最終確認</div>
+                    
+                    <div class="section">
+                        <div class="section-header">備考・メモ</div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">目的内容</label>
+                            <textarea name="mokuteki_naiyou" rows="3" placeholder="目的や背景を記載してください"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">備考</label>
+                            <textarea name="bikou" rows="4" placeholder="特記事項、注意点などを記載してください"></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">最終確認者</label>
+                                <input type="text" class="form-input" name="saishuu_kakuninsha">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">最終確認日</label>
+                                <input type="date" class="form-input" name="saishuu_kakunin_bi">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label style="font-size: 16px;">
+                                <input type="checkbox" required> 
+                                入力内容を確認しました
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="navigation">
+                <button type="button" class="btn btn-prev" id="prevBtn" onclick="changeStep(-1)" style="display: none;">← 戻る</button>
+                <button type="button" class="btn btn-next" id="nextBtn" onclick="changeStep(1)">次へ →</button>
+                <button type="submit" class="btn btn-submit" id="submitBtn" style="display: none;">登録実行</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        let currentStep = 1;
+        const totalSteps = 3;
+        
+        function changeStep(direction) {
+            const newStep = currentStep + direction;
+            
+            if (newStep < 1 || newStep > totalSteps) return;
+            
+            // 現在のステップを非表示
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            document.getElementById(`prog-${currentStep}`).classList.remove('active');
+            
+            // 新しいステップを表示
+            currentStep = newStep;
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            document.getElementById(`prog-${currentStep}`).classList.add('active');
+            
+            // プログレスラインの更新
+            for (let i = 1; i < currentStep; i++) {
+                document.getElementById(`prog-${i}`).classList.add('completed');
+                if (i < totalSteps) {
+                    document.getElementById(`line-${i}`).classList.add('completed');
+                }
+            }
+            
+            for (let i = currentStep; i <= totalSteps; i++) {
+                if (i > currentStep) {
+                    document.getElementById(`prog-${i}`).classList.remove('completed');
+                }
+                if (i <= totalSteps - 1) {
+                    document.getElementById(`line-${i}`).classList.remove('completed');
+                }
+            }
+            
+            // ナビゲーションボタンの表示切り替え
+            document.getElementById('prevBtn').style.display = currentStep === 1 ? 'none' : 'block';
+            document.getElementById('nextBtn').style.display = currentStep === totalSteps ? 'none' : 'block';
+            document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'block' : 'none';
+        }
+        
+        // フォーム送信
+        document.getElementById('mainForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('登録が完了しました（テスト）');
+        });
+        
+        // 付番ボタン
+        document.querySelector('button[type="button"]').addEventListener('click', function() {
+            const now = new Date();
+            const no = 'HPC' + now.getFullYear() + 
+                      String(now.getMonth() + 1).padStart(2, '0') +
+                      String(now.getDate()).padStart(2, '0') +
+                      String(now.getHours()).padStart(2, '0') +
+                      String(now.getMinutes()).padStart(2, '0');
+            document.querySelector('input[name="henkaiten_no"]').value = no;
+        });
+    </script>
+</body>
+</html>

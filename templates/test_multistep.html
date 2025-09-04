@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マルチステップフォーム テスト</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .step {
+            display: none;
+            padding: 20px;
+            border: 2px solid #ccc;
+            margin: 10px 0;
+            background: #f9f9f9;
+        }
+        
+        .step.active {
+            display: block;
+            border-color: #007bff;
+            background: #e7f3ff;
+        }
+        
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+        
+        .btn-prev {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-next {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-submit {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .progress {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        
+        .progress-step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ccc;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .progress-step.active {
+            background: #007bff;
+        }
+        
+        .progress-step.completed {
+            background: #28a745;
+        }
+        
+        .debug {
+            background: yellow;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>マルチステップフォーム動作テスト</h1>
+        
+        <!-- プログレスバー -->
+        <div class="progress">
+            <div class="progress-step active" id="progress-1">1</div>
+            <div class="progress-step" id="progress-2">2</div>
+            <div class="progress-step" id="progress-3">3</div>
+        </div>
+        
+        <!-- デバッグ情報 -->
+        <div class="debug">
+            <strong>デバッグ情報:</strong>
+            <div id="debug-info">現在のステップ: 1</div>
+        </div>
+        
+        <form id="testForm">
+            <!-- ステップ1 -->
+            <div class="step active" id="step-1">
+                <h2>ステップ 1: 基本情報</h2>
+                <p>これはステップ1です。</p>
+                <input type="text" placeholder="名前" style="width: 100%; padding: 8px; margin: 10px 0;">
+                <input type="email" placeholder="メール" style="width: 100%; padding: 8px; margin: 10px 0;">
+                
+                <div class="buttons">
+                    <span></span>
+                    <button type="button" onclick="goToStep(2)" class="btn-next">次へ →</button>
+                </div>
+            </div>
+            
+            <!-- ステップ2 -->
+            <div class="step" id="step-2">
+                <h2>ステップ 2: 詳細情報</h2>
+                <p>これはステップ2です。表示されていますか？</p>
+                <textarea placeholder="コメント" style="width: 100%; padding: 8px; margin: 10px 0;" rows="4"></textarea>
+                
+                <div class="buttons">
+                    <button type="button" onclick="goToStep(1)" class="btn-prev">← 戻る</button>
+                    <button type="button" onclick="goToStep(3)" class="btn-next">次へ →</button>
+                </div>
+            </div>
+            
+            <!-- ステップ3 -->
+            <div class="step" id="step-3">
+                <h2>ステップ 3: 確認</h2>
+                <p>これはステップ3です。最終確認画面です。</p>
+                <label>
+                    <input type="checkbox"> 内容を確認しました
+                </label>
+                
+                <div class="buttons">
+                    <button type="button" onclick="goToStep(2)" class="btn-prev">← 戻る</button>
+                    <button type="submit" class="btn-submit">送信</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        let currentStep = 1;
+        
+        function goToStep(stepNumber) {
+            console.log('goToStep called:', stepNumber);
+            
+            // 現在のステップを非表示
+            const currentStepEl = document.getElementById(`step-${currentStep}`);
+            const currentProgressEl = document.getElementById(`progress-${currentStep}`);
+            
+            if (currentStepEl) {
+                currentStepEl.classList.remove('active');
+                console.log(`Step ${currentStep} hidden`);
+            }
+            
+            if (currentProgressEl) {
+                currentProgressEl.classList.remove('active');
+                if (stepNumber > currentStep) {
+                    currentProgressEl.classList.add('completed');
+                } else {
+                    currentProgressEl.classList.remove('completed');
+                }
+            }
+            
+            // 新しいステップを表示
+            const newStepEl = document.getElementById(`step-${stepNumber}`);
+            const newProgressEl = document.getElementById(`progress-${stepNumber}`);
+            
+            if (newStepEl) {
+                newStepEl.classList.add('active');
+                console.log(`Step ${stepNumber} shown`);
+            } else {
+                console.error(`Step ${stepNumber} not found!`);
+            }
+            
+            if (newProgressEl) {
+                newProgressEl.classList.add('active');
+                newProgressEl.classList.remove('completed');
+            }
+            
+            currentStep = stepNumber;
+            
+            // デバッグ情報更新
+            const debugInfo = document.getElementById('debug-info');
+            if (debugInfo) {
+                debugInfo.textContent = `現在のステップ: ${currentStep}`;
+            }
+        }
+        
+        // フォーム送信防止
+        document.getElementById('testForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('フォームが送信されました（テスト）');
+        });
+        
+        // 初期状態の確認
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded');
+            console.log('Step 1:', document.getElementById('step-1'));
+            console.log('Step 2:', document.getElementById('step-2'));
+            console.log('Step 3:', document.getElementById('step-3'));
+        });
+    </script>
+</body>
+</html>

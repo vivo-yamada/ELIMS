@@ -402,6 +402,133 @@ body {
     transform: translateY(-1px);
 }
 
+/* マルチステップフォーム */
+.step-container {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.step-container.active {
+    display: block !important;
+    position: relative !important;
+}
+
+.step-progress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px 0;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+}
+
+.step-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.step-number.active {
+    border-color: #2196f3;
+    background: #2196f3;
+    color: white;
+}
+
+.step-number.completed {
+    border-color: #4caf50;
+    background: #4caf50;
+    color: white;
+}
+
+.step-line {
+    width: 40px;
+    height: 2px;
+    background: #e0e0e0;
+    transition: background-color 0.3s ease;
+}
+
+.step-line.completed {
+    background: #4caf50;
+}
+
+.step-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.step-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 15px 0;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-nav {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-prev {
+    background: #f5f5f5;
+    color: #666;
+    border: 1px solid #ddd;
+}
+
+.btn-prev:hover {
+    background: #e0e0e0;
+}
+
+.btn-next {
+    background: #2196f3;
+    color: white;
+}
+
+.btn-next:hover {
+    background: #1976d2;
+}
+
+.btn-submit {
+    background: #4caf50;
+    color: white;
+}
+
+.btn-submit:hover {
+    background: #388e3c;
+}
+
 /* アニメーション */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
@@ -435,20 +562,29 @@ body {
 
 {% block content %}
 <div class="container fade-in">
-    <form method="POST" action="{{ url_for('register') }}">
+    <form method="POST" action="{{ url_for('register') }}" id="multiStepForm">
         <!-- ヘッダー -->
         <div class="header">
             <h1>変化点管理台帳 登録</h1>
-            <div class="header-buttons">
-                <button type="submit" class="btn btn-primary">登録実行</button>
-                <button type="button" class="btn btn-secondary" onclick="window.close()">閉じる</button>
+        </div>
+        
+        <!-- ステッププログレス -->
+        <div class="step-progress">
+            <div class="step-indicator">
+                <div class="step-number active" id="step-1-indicator">1</div>
+                <div class="step-line" id="line-1"></div>
+                <div class="step-number" id="step-2-indicator">2</div>
+                <div class="step-line" id="line-2"></div>
+                <div class="step-number" id="step-3-indicator">3</div>
             </div>
         </div>
         
-        <div class="main-content">
-            <!-- 基本情報セクション -->
-            <div class="section card-effect">
-                <div class="section-header">基本情報</div>
+        <div class="main-content" style="position: relative; min-height: 600px;">
+            <!-- ステップ 1: 基本情報 -->
+            <div class="step-container active" id="step-1">
+                <div class="step-title">ステップ 1: 基本情報</div>
+                <div class="section card-effect">
+                    <div class="section-header">基本情報</div>
                 <div class="section-content">
                     <div class="compact-row">
                         <div class="form-group-inline">
@@ -576,10 +712,31 @@ body {
                         </div>
                     </div>
                 </div>
+                
+                <!-- ステップナビゲーション -->
+                <div class="step-navigation">
+                    <div></div>
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-nav btn-next" onclick="nextStep(1)">次へ</button>
+                    </div>
+                </div>
             </div>
             
-            <!-- メイン4カラムセクション -->
-            <div class="four-column-layout">
+            <!-- ステップ 2: 詳細情報 -->
+            <div class="step-container" id="step-2">
+                <div class="step-title">ステップ 2: 詳細情報</div>
+                
+                <!-- テスト用ナビゲーションボタン（上部に配置） -->
+                <div class="step-navigation" style="border: 2px solid red; padding: 10px; margin: 10px;">
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-nav btn-prev" onclick="prevStep(2)" style="background: orange;">戻る（テスト）</button>
+                    </div>
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-nav btn-next" onclick="nextStep(2)" style="background: green;">次へ（テスト）</button>
+                    </div>
+                </div>
+                
+                <div class="four-column-layout">
                 <!-- 設変セクション -->
                 <div class="section card-effect">
                     <div class="section-header">設変</div>
@@ -867,6 +1024,66 @@ body {
                         </div>
                     </div>
                 </div>
+                </div> <!-- four-column-layout の閉じタグ -->
+                
+                <!-- ステップナビゲーション -->
+                <div class="step-navigation">
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-nav btn-prev" onclick="prevStep(2)">戻る</button>
+                    </div>
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-nav btn-next" onclick="nextStep(2)">次へ</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ステップ 3: 備考・最終確認 -->
+            <div class="step-container" id="step-3">
+                <div class="step-title">ステップ 3: 備考・最終確認</div>
+                
+                <!-- テスト用ナビゲーションボタン（上部に配置） -->
+                <div class="step-navigation" style="border: 2px solid blue; padding: 10px; margin: 10px;">
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-nav btn-prev" onclick="prevStep(3)" style="background: orange;">戻る（ステップ3）</button>
+                    </div>
+                    <div class="nav-buttons">
+                        <button type="submit" class="btn-nav btn-submit" style="background: red;">登録実行（テスト）</button>
+                    </div>
+                </div>
+                
+                <div class="section card-effect">
+                    <div class="section-header">備考・メモ</div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label class="form-label">目的内容</label>
+                            <textarea name="mokuteki_naiyou" class="large-textarea" rows="3" placeholder="目的や背景を記載してください"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">備考</label>
+                            <textarea name="bikou" class="large-textarea" rows="4" placeholder="特記事項、注意点などを記載してください"></textarea>
+                        </div>
+                        <div class="compact-row">
+                            <div class="form-group-inline">
+                                <label class="form-label">最終確認者</label>
+                                <input type="text" name="saishuu_kakuninsha" class="form-input">
+                            </div>
+                            <div class="form-group-inline">
+                                <label class="form-label">最終確認日</label>
+                                <input type="date" name="saishuu_kakunin_bi" class="form-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ステップナビゲーション -->
+                <div class="step-navigation">
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-nav btn-prev" onclick="prevStep(3)">戻る</button>
+                    </div>
+                    <div class="nav-buttons">
+                        <button type="submit" class="btn-nav btn-submit">登録実行</button>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
@@ -905,6 +1122,95 @@ document.querySelector('.fuban-btn').addEventListener('click', function() {
     if (!henkatienNo.value.trim()) {
         henkatienNo.value = 'HPC' + timestamp;
     }
+});
+
+// マルチステップフォームの機能
+let currentStep = 1;
+const totalSteps = 3;
+
+function nextStep(step) {
+    console.log('nextStep called with step:', step);
+    if (step < totalSteps) {
+        const currentStepElement = document.getElementById(`step-${step}`);
+        const nextStepElement = document.getElementById(`step-${step + 1}`);
+        
+        console.log('Current step element:', currentStepElement);
+        console.log('Next step element:', nextStepElement);
+        
+        if (currentStepElement && nextStepElement) {
+            currentStepElement.classList.remove('active');
+            nextStepElement.classList.add('active');
+            
+            // ステップインジケーターの更新
+            const currentIndicator = document.getElementById(`step-${step}-indicator`);
+            const nextIndicator = document.getElementById(`step-${step + 1}-indicator`);
+            const line = document.getElementById(`line-${step}`);
+            
+            if (currentIndicator && nextIndicator) {
+                currentIndicator.classList.remove('active');
+                currentIndicator.classList.add('completed');
+                nextIndicator.classList.add('active');
+            }
+            
+            if (line) {
+                line.classList.add('completed');
+            }
+            
+            currentStep = step + 1;
+        }
+    }
+}
+
+function prevStep(step) {
+    console.log('prevStep called with step:', step);
+    if (step > 1) {
+        const currentStepElement = document.getElementById(`step-${step}`);
+        const prevStepElement = document.getElementById(`step-${step - 1}`);
+        
+        console.log('Current step element:', currentStepElement);
+        console.log('Previous step element:', prevStepElement);
+        
+        if (currentStepElement && prevStepElement) {
+            currentStepElement.classList.remove('active');
+            prevStepElement.classList.add('active');
+            
+            // ステップインジケーターの更新
+            const currentIndicator = document.getElementById(`step-${step}-indicator`);
+            const prevIndicator = document.getElementById(`step-${step - 1}-indicator`);
+            const line = document.getElementById(`line-${step - 1}`);
+            
+            if (currentIndicator && prevIndicator) {
+                currentIndicator.classList.remove('active');
+                prevIndicator.classList.remove('completed');
+                prevIndicator.classList.add('active');
+            }
+            
+            if (line) {
+                line.classList.remove('completed');
+            }
+            
+            currentStep = step - 1;
+        }
+    }
+}
+
+// DOMが読み込まれた後に実行
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded');
+    
+    // 初期状態の確認
+    const step1 = document.getElementById('step-1');
+    const step2 = document.getElementById('step-2');
+    const step3 = document.getElementById('step-3');
+    
+    console.log('Step 1:', step1);
+    console.log('Step 2:', step2);
+    console.log('Step 3:', step3);
+    
+    // 最初のステップのみ表示
+    if (step1) step1.classList.add('active');
+    if (step2) step2.classList.remove('active');
+    if (step3) step3.classList.remove('active');
 });
 
 // アニメーション効果

@@ -12,6 +12,16 @@ def index():
     """メインページ"""
     return render_template('register_modern.html')
 
+@app.route('/test')
+def test():
+    """テストページ"""
+    return render_template('test_multistep.html')
+
+@app.route('/working')
+def working():
+    """動作確認版"""
+    return render_template('test_working.html')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """変化点管理台帳の登録処理"""
