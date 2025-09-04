@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="POST" action="{{ url_for('register') }}">
+    <!-- ヘッダー -->
+    <div class="form-header">基本情報</div>
+    
+    <!-- 基本情報セクション -->
+    <div class="basic-info">
+        <div class="basic-info-row">
+            <div class="form-group">
+                <label>工務受付No</label>
+                <input type="text" name="komu_uketsuke_no" maxlength="20">
+            </div>
+            <div class="form-group">
+                <label>変化点No</label>
+                <input type="text" name="henkaiten_no" maxlength="20">
+            </div>
+            <div class="form-group">
+                <label>付着</label>
+                <input type="text" name="fuchaku" maxlength="255">
+            </div>
+            <div class="form-group">
+                <label>特別監視項目</label>
+                <input type="text" name="tokubetsu_kanshi_komoku" maxlength="255">
+            </div>
+        </div>
+        
+        <div class="basic-info-row">
+            <div class="form-group">
+                <label>工務区分</label>
+                <div class="radio-group">
+                    <input type="radio" id="komu_kubun_seisan" name="komu_kubun" value="生産">
+                    <label for="komu_kubun_seisan">生産</label>
+                    <input type="radio" id="komu_kubun_seizo" name="komu_kubun" value="製造">
+                    <label for="komu_kubun_seizo">製造</label>
+                    <input type="radio" id="komu_kubun_kaigai" name="komu_kubun" value="海外">
+                    <label for="komu_kubun_kaigai">海外</label>
+                    <input type="radio" id="komu_kubun_keikaku" name="komu_kubun" value="計画">
+                    <label for="komu_kubun_keikaku">計画</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>返却日</label>
+                <input type="date" name="henkyaku_bi">
+            </div>
+        </div>
+        
+        <div class="basic-info-row">
+            <div class="form-group">
+                <label>起票部署</label>
+                <select name="kippu_busho">
+                    <option value=""></option>
+                    <option value="TDK(株)">TDK(株)</option>
+                    <!-- 他の部署オプション -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label>担当者</label>
+                <select name="tantousha">
+                    <option value=""></option>
+                    <!-- 担当者オプション -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label>工場ランク</label>
+                <select name="koujou_rank">
+                    <option value=""></option>
+                    <!-- ランクオプション -->
+                </select>
+            </div>
+        </div>
+        
+        <div class="basic-info-row">
+            <div class="form-group">
+                <label>品番</label>
+                <input type="text" name="hinban" maxlength="50">
+            </div>
+            <div class="form-group">
+                <label>品名</label>
+                <input type="text" name="hinmei" maxlength="100">
+            </div>
+        </div>
+        
+        <div class="basic-info-row">
+            <div class="form-group">
+                <label>工務備考</label>
+                <textarea name="komu_bikou" maxlength="255"></textarea>
+            </div>
+            <div class="form-group">
+                <label>管轄</label>
+                <div class="radio-group">
+                    <input type="radio" id="kankatsu_sw" name="kankatsu" value="SW">
+                    <label for="kankatsu_sw">SW</label>
+                    <input type="radio" id="kankatsu_el" name="kankatsu" value="EL">
+                    <label for="kankatsu_el">EL</label>
+                    <input type="radio" id="kankatsu_me" name="kankatsu" value="ME">
+                    <label for="kankatsu_me">ME</label>
+                    <input type="radio" id="kankatsu_eld" name="kankatsu" value="ELD">
+                    <label for="kankatsu_eld">ELD</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="basic-info-row">
+            <div class="form-group">
+                <label>客先提出要否</label>
+                <div class="radio-group">
+                    <input type="radio" id="kyakusaki_tei_you" name="kyakusaki_teishutsu_youhi" value="要">
+                    <label for="kyakusaki_tei_you">要</label>
+                    <input type="radio" id="kyakusaki_tei_hi" name="kyakusaki_teishutsu_youhi" value="否">
+                    <label for="kyakusaki_tei_hi">否</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>特殊工程有無</label>
+                <div class="radio-group">
+                    <input type="radio" id="tokushu_ari" name="tokushu_koutei_umu" value="有">
+                    <label for="tokushu_ari">有</label>
+                    <input type="radio" id="tokushu_nashi" name="tokushu_koutei_umu" value="無">
+                    <label for="tokushu_nashi">無</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>TEL</label>
+                <input type="text" name="tel" maxlength="15">
+            </div>
+            <div class="form-group">
+                <label>メール</label>
+                <input type="email" name="email" maxlength="200">
+            </div>
+        </div>
+    </div>
+    
+    <!-- メインセクション -->
+    <div class="main-sections">
+        <!-- 設定 -->
+        <div class="section">
+            <div class="section-header">設定</div>
+            <div class="section-content">
+                <div class="form-group">
+                    <label>設定No</label>
+                    <input type="text" name="settei_no" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <label>設定区分</label>
+                    <select name="settei_kubun">
+                        <option value=""></option>
+                        <!-- 設定区分オプション -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>出図予定日</label>
+                    <input type="date" name="shutsuzu_yotei_bi">
+                </div>
+                <div class="form-group">
+                    <label>出図実績日</label>
+                    <input type="date" name="shutsuzu_jisseki_bi">
+                </div>
+            </div>
+        </div>
+        
+        <!-- 変更内容 -->
+        <div class="section change-content">
+            <div class="section-header">変更内容</div>
+            <div class="section-content">
+                <div class="checkbox-grid">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="henkou_shiken" name="henkou_naiyou" value="試験">
+                        <label for="henkou_shiken">1. 試験</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="henkou_kensa" name="henkou_naiyou" value="検査機器">
+                        <label for="henkou_kensa">2. 検査機器</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="henkou_kanagata" name="henkou_naiyou" value="金型">
+                        <label for="henkou_kanagata">3. 金型</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="henkou_jikougu" name="henkou_naiyou" value="治工具">
+                        <label for="henkou_jikougu">4. 治工具</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="henkou_seizo" name="henkou_naiyou" value="製造条件">
+                        <label for="henkou_seizo">5. 製造条件</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="henkou_koutei" name="henkou_naiyou" value="工程">
+                        <label for="henkou_koutei">6. 工程</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="henkou_seizo_basho" name="henkou_naiyou" value="製造場所">
+                        <label for="henkou_seizo_basho">7. 製造場所</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="henkou_zairyou" name="henkou_naiyou" value="材料">
+                        <label for="henkou_zairyou">8. 材料</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="henkou_fuku" name="henkou_naiyou" value="副資材">
+                        <label for="henkou_fuku">9. 副資材</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="henkou_sonota" name="henkou_naiyou" value="その他">
+                        <label for="henkou_sonota">10. その他</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="henkou_butsuryu" name="henkou_naiyou" value="物流">
+                        <label for="henkou_butsuryu">11. 物流</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 日程管理 -->
+        <div class="section">
+            <div class="section-header">日程管理</div>
+            <div class="section-content">
+                <div class="date-management">
+                    <div class="date-group">
+                        <div class="date-row">
+                            <label>起票日</label>
+                            <input type="date" name="kippu_bi">
+                        </div>
+                        <div class="date-row">
+                            <label>工務受付日</label>
+                            <input type="date" name="komu_uketsuke_bi">
+                        </div>
+                        <div class="date-row">
+                            <label>品管受付日</label>
+                            <input type="date" name="hinkan_uketsuke_bi">
+                        </div>
+                        <div class="date-row">
+                            <label>承認日</label>
+                            <input type="date" name="shounin_bi">
+                        </div>
+                    </div>
+                    <div class="date-group">
+                        <div class="date-row">
+                            <label>配布日</label>
+                            <input type="date" name="haifu_bi">
+                        </div>
+                        <div class="date-row">
+                            <label>取消日</label>
+                            <input type="date" name="torikeshi_bi">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- フリー入力 -->
+        <div class="section">
+            <div class="section-header">フリー入力</div>
+            <div class="section-content">
+                <div class="free-input">
+                    <div class="free-input-row">
+                        <label>①</label>
+                        <textarea name="free_nyuryoku_1" maxlength="200"></textarea>
+                    </div>
+                    <div class="free-input-row">
+                        <label>②</label>
+                        <textarea name="free_nyuryoku_2" maxlength="200"></textarea>
+                    </div>
+                    <div class="free-input-row">
+                        <label>③</label>
+                        <textarea name="free_nyuryoku_3" maxlength="200"></textarea>
+                    </div>
+                    <div class="free-input-row">
+                        <label>④</label>
+                        <textarea name="free_nyuryoku_4" maxlength="200"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>備考</label>
+                        <textarea name="bikou" maxlength="255"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ボタン -->
+    <div class="button-group">
+        <button type="submit" class="btn btn-primary">登録実行</button>
+        <button type="button" class="btn btn-secondary" onclick="window.location.href='/'">閉じる</button>
+    </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// フォーム送信前のバリデーション
+document.querySelector('form').addEventListener('submit', function(e) {
+    const henkatienNo = document.querySelector('input[name="henkaiten_no"]').value.trim();
+    
+    if (!henkatienNo) {
+        alert('変化点Noは必須です。');
+        e.preventDefault();
+        return;
+    }
+    
+    if (confirm('登録してもよろしいですか？')) {
+        // 登録処理継続
+    } else {
+        e.preventDefault();
+    }
+});
+</script>
+{% endblock %}
