@@ -108,15 +108,50 @@ body {
 
 .grid-row {
     display: grid;
-    grid-template-columns: 110px 1fr 110px 1fr 110px 1fr;
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 8px;
+    align-items: start;
+    padding: 4px 0;
+}
+
+.compact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     align-items: center;
-    padding: 8px 0;
+    margin-bottom: 8px;
+}
+
+.inline-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 200px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
+    min-width: 0;
+}
+
+.form-group-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.form-group-inline .form-label {
+    margin-bottom: 0;
+    white-space: nowrap;
+    min-width: 80px;
+}
+
+.form-group-inline .form-input,
+.form-group-inline .form-select {
+    flex: 1;
 }
 
 .form-label {
@@ -150,8 +185,31 @@ body {
 /* ラジオボタンとチェックボックス */
 .radio-group, .checkbox-group {
     display: flex;
-    gap: 15px;
+    gap: 6px;
     flex-wrap: wrap;
+}
+
+.radio-group-compact {
+    display: flex;
+    gap: 4px;
+    flex-wrap: nowrap;
+}
+
+.radio-group-compact .radio-item {
+    padding: 3px 6px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.radio-group-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.radio-group-vertical .radio-item {
+    padding: 2px 4px;
+    font-size: 12px;
 }
 
 .radio-item, .checkbox-item {
@@ -203,9 +261,9 @@ body {
 /* 4カラムレイアウト - よりコンパクト */
 .four-column-layout {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 15px;
-    margin-top: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
 }
 
 /* 変更内容グリッド - より密度高く */
@@ -248,7 +306,29 @@ body {
 }
 
 .detail-content {
-    padding: 10px;
+    padding: 8px;
+}
+
+.detail-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.detail-compact .form-group {
+    margin-bottom: 4px;
+}
+
+.detail-compact .form-label {
+    font-size: 12px;
+    margin-bottom: 2px;
+}
+
+.detail-compact .form-input,
+.detail-compact .form-select {
+    padding: 4px 8px;
+    font-size: 13px;
+    min-height: 28px;
 }
 
 .detail-row {
@@ -370,76 +450,76 @@ body {
             <div class="section card-effect">
                 <div class="section-header">基本情報</div>
                 <div class="section-content">
-                    <div class="grid-row">
-                        <div class="form-group">
+                    <div class="compact-row">
+                        <div class="form-group-inline">
                             <label class="form-label">工務受付No</label>
                             <input type="text" name="komu_uketsuke_no" class="form-input">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group-inline">
                             <label class="form-label">変化点№</label>
                             <div class="fuban-container">
                                 <input type="text" name="henkaiten_no" class="form-input fuban-input">
                                 <button type="button" class="fuban-btn">付番</button>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group-inline">
                             <label class="form-label">特別実施項目</label>
                             <input type="text" name="tokubetsu_jisshi_komoku" class="form-input">
                         </div>
                     </div>
                     
-                    <div class="grid-row">
-                        <div class="form-group">
+                    <div class="compact-row">
+                        <div class="inline-group">
                             <label class="form-label">工務区分</label>
-                            <div class="radio-group">
+                            <div class="radio-group-compact">
                                 <label class="radio-item"><input type="radio" name="komu_kubun" value="部品"> 部品</label>
                                 <label class="radio-item"><input type="radio" name="komu_kubun" value="製品"> 製品</label>
                                 <label class="radio-item"><input type="radio" name="komu_kubun" value="海外"> 海外</label>
                                 <label class="radio-item"><input type="radio" name="komu_kubun" value="計画"> 計画</label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group-inline">
                             <label class="form-label">連絡書№</label>
                             <input type="text" name="renraku_sho_no" class="form-input">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group-inline">
                             <label class="form-label">返却日</label>
                             <input type="date" name="henkyaku_bi" class="form-input">
                         </div>
                     </div>
                     
-                    <div class="grid-row">
-                        <div class="form-group">
+                    <div class="compact-row">
+                        <div class="form-group-inline">
                             <label class="form-label">起票部署</label>
                             <select name="kippu_busho" class="form-select">
                                 <option value=""></option>
                                 <option value="TDK(株)">TDK(株)</option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group-inline">
                             <label class="form-label">担当者</label>
                             <select name="tantousha" class="form-select">
                                 <option value=""></option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">返却内容</label>
-                            <textarea name="henkyaku_naiyou" class="form-textarea" rows="3"></textarea>
-                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">返却内容</label>
+                        <textarea name="henkyaku_naiyou" class="form-textarea" rows="2"></textarea>
                     </div>
                     
-                    <div class="grid-row">
-                        <div class="form-group">
+                    <div class="compact-row">
+                        <div class="form-group-inline">
                             <label class="form-label">品番</label>
                             <input type="text" name="hinban" class="form-input">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group-inline">
                             <label class="form-label">工変ランク</label>
                             <select name="kouhen_rank" class="form-select">
                                 <option value=""></option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="inline-group">
                             <label class="form-label">品質カルテ減点対象外</label>
                             <label class="checkbox-item">
                                 <input type="checkbox" name="hinshitsu_karute_genten_taishougai">
@@ -448,48 +528,48 @@ body {
                         </div>
                     </div>
                     
-                    <div class="grid-row">
-                        <div class="form-group">
+                    <div class="compact-row">
+                        <div class="form-group-inline">
                             <label class="form-label">品名</label>
                             <input type="text" name="hinmei" class="form-input">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group-inline">
                             <label class="form-label">工務備考</label>
                             <input type="text" name="komu_bikou" class="form-input">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group-inline">
                             <label class="form-label">TEL</label>
                             <input type="text" name="tel" class="form-input">
                         </div>
                     </div>
                     
-                    <div class="grid-row">
-                        <div class="form-group">
+                    <div class="compact-row">
+                        <div class="inline-group">
                             <label class="form-label">客先提出要否</label>
-                            <div class="radio-group">
+                            <div class="radio-group-compact">
                                 <label class="radio-item"><input type="radio" name="kyakusaki_teishutsu_youhi" value="要"> 要</label>
                                 <label class="radio-item"><input type="radio" name="kyakusaki_teishutsu_youhi" value="否"> 否</label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="inline-group">
                             <label class="form-label">管轄</label>
-                            <div class="radio-group">
+                            <div class="radio-group-compact">
                                 <label class="radio-item"><input type="radio" name="kankatsu" value="SW"> SW</label>
                                 <label class="radio-item"><input type="radio" name="kankatsu" value="EL"> EL</label>
                                 <label class="radio-item"><input type="radio" name="kankatsu" value="ME"> ME</label>
                                 <label class="radio-item"><input type="radio" name="kankatsu" value="ELD"> ELD</label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group-inline">
                             <label class="form-label">メール</label>
                             <input type="email" name="email" class="form-input">
                         </div>
                     </div>
                     
-                    <div class="grid-row">
-                        <div class="form-group">
+                    <div class="compact-row">
+                        <div class="inline-group">
                             <label class="form-label">特殊工程有無</label>
-                            <div class="radio-group">
+                            <div class="radio-group-compact">
                                 <label class="radio-item"><input type="radio" name="tokushu_koutei_umu" value="有"> 有</label>
                                 <label class="radio-item"><input type="radio" name="tokushu_koutei_umu" value="無"> 無</label>
                             </div>
@@ -613,10 +693,10 @@ body {
                 <!-- 部品 -->
                 <div class="detail-column card-effect">
                     <div class="detail-header">部品</div>
-                    <div class="detail-content">
+                    <div class="detail-content detail-compact">
                         <div class="form-group">
                             <label class="form-label">評価有無</label>
-                            <div class="radio-group">
+                            <div class="radio-group-vertical">
                                 <label class="radio-item"><input type="radio" name="buhin_hyouka_umu" value="有"> 有</label>
                                 <label class="radio-item"><input type="radio" name="buhin_hyouka_umu" value="無"> 無</label>
                             </div>
@@ -663,10 +743,10 @@ body {
                 <!-- 製品 -->
                 <div class="detail-column card-effect">
                     <div class="detail-header">製品</div>
-                    <div class="detail-content">
+                    <div class="detail-content detail-compact">
                         <div class="form-group">
                             <label class="form-label">評価有無</label>
-                            <div class="radio-group">
+                            <div class="radio-group-vertical">
                                 <label class="radio-item"><input type="radio" name="seihin_hyouka_umu" value="有"> 有</label>
                                 <label class="radio-item"><input type="radio" name="seihin_hyouka_umu" value="無"> 無</label>
                             </div>
@@ -707,10 +787,10 @@ body {
                 <!-- 工程確認 -->
                 <div class="detail-column card-effect">
                     <div class="detail-header">工程確認</div>
-                    <div class="detail-content">
+                    <div class="detail-content detail-compact">
                         <div class="form-group">
                             <label class="form-label">B工程要否</label>
-                            <div class="radio-group">
+                            <div class="radio-group-vertical">
                                 <label class="radio-item"><input type="radio" name="b_koutei_youhi" value="有"> 有</label>
                                 <label class="radio-item"><input type="radio" name="b_koutei_youhi" value="無"> 無</label>
                             </div>
@@ -737,7 +817,7 @@ body {
                 <!-- 流動可否 -->
                 <div class="detail-column card-effect">
                     <div class="detail-header">流動可否</div>
-                    <div class="detail-content">
+                    <div class="detail-content detail-compact">
                         <div class="form-group">
                             <label class="form-label">流動可否</label>
                             <select name="ryuudou_kahi" class="form-select">
@@ -772,7 +852,7 @@ body {
                 <!-- 初品納入 -->
                 <div class="detail-column card-effect">
                     <div class="detail-header">初品納入</div>
-                    <div class="detail-content">
+                    <div class="detail-content detail-compact">
                         <div class="form-group">
                             <label class="form-label">予定日</label>
                             <input type="date" name="shohin_yotei_bi" class="form-input">
