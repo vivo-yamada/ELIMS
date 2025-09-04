@@ -10,14 +10,14 @@ app.config.from_object(Config)
 @app.route('/')
 def index():
     """メインページ"""
-    return render_template('register.html')
+    return render_template('register_excel.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """変化点管理台帳の登録処理"""
     
     if request.method == 'GET':
-        return render_template('register.html')
+        return render_template('register_excel.html')
     
     if request.method == 'POST':
         try:
@@ -249,7 +249,7 @@ def register():
             print(f"Error: {error_message}")
             print(f"Traceback: {traceback.format_exc()}")
             flash(error_message, 'error')
-            return render_template('register.html')
+            return render_template('register_excel.html')
 
 @app.errorhandler(404)
 def not_found_error(error):

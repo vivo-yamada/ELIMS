@@ -1,0 +1,639 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+/* Excel風スタイル */
+body {
+    font-family: 'MS UI Gothic', 'Hiragino Sans', sans-serif;
+    font-size: 11px;
+    margin: 0;
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+
+.excel-container {
+    background-color: white;
+    border: 2px solid #808080;
+    margin: 0 auto;
+    width: 1200px;
+}
+
+/* ヘッダーボタン */
+.header-buttons {
+    text-align: right;
+    padding: 8px;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #c0c0c0;
+}
+
+.excel-btn {
+    background-color: #e0e0e0;
+    border: 1px solid #808080;
+    padding: 4px 12px;
+    margin-left: 8px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+/* セクションヘッダー */
+.section-header {
+    background-color: #c0c0c0;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #808080;
+    padding: 4px;
+}
+
+/* セルスタイル */
+.excel-cell {
+    border: 1px solid #c0c0c0;
+    padding: 2px 4px;
+    vertical-align: middle;
+    height: 18px;
+}
+
+.excel-input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    height: 14px;
+    font-size: 11px;
+    outline: none;
+}
+
+.excel-select {
+    border: none;
+    background: transparent;
+    width: 100%;
+    height: 18px;
+    font-size: 11px;
+}
+
+/* グリッドレイアウト */
+.excel-grid {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.excel-row {
+    display: table-row;
+}
+
+.excel-cell {
+    display: table-cell;
+    border: 1px solid #c0c0c0;
+    padding: 2px;
+    vertical-align: middle;
+    height: 18px;
+}
+
+/* セルサイズ調整 */
+.col-narrow { width: 40px; }
+.col-small { width: 80px; }
+.col-medium { width: 120px; }
+.col-wide { width: 160px; }
+.col-xl { width: 200px; }
+
+/* チェックボックスとラジオボタン */
+.checkbox-grid {
+    display: inline;
+}
+
+.radio-inline {
+    margin-right: 10px;
+}
+
+/* 結合セル */
+.merged-2 { colspan: 2; }
+.merged-3 { colspan: 3; }
+.merged-4 { colspan: 4; }
+.merged-5 { colspan: 5; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="excel-container">
+    <form method="POST" action="{{ url_for('register') }}">
+        <!-- ヘッダーボタン -->
+        <div class="header-buttons">
+            <button type="submit" class="excel-btn">登録実行</button>
+            <button type="button" class="excel-btn" onclick="window.close()">閉じる</button>
+        </div>
+        
+        <!-- 基本情報セクション -->
+        <div class="section-header">基本情報</div>
+        
+        <div class="excel-grid">
+            <!-- 行7: 工務受付No, 変化点№, 付番, 特別実施項目 -->
+            <div class="excel-row">
+                <div class="excel-cell col-small">工務受付No</div>
+                <div class="excel-cell col-medium merged-4">
+                    <input type="text" name="komu_uketsuke_no" class="excel-input">
+                </div>
+                <div class="excel-cell col-small">変化点№</div>
+                <div class="excel-cell col-medium merged-4">
+                    <input type="text" name="henkaiten_no" class="excel-input">
+                </div>
+                <div class="excel-cell col-narrow">付番</div>
+                <div class="excel-cell col-small">
+                    <input type="text" name="fuban" class="excel-input">
+                </div>
+                <div class="excel-cell col-medium">特別実施項目</div>
+                <div class="excel-cell col-medium merged-4">
+                    <input type="text" name="tokubetsu_jisshi_komoku" class="excel-input">
+                </div>
+            </div>
+            
+            <!-- 行8: 工務区分, 連絡書№, 返却日 -->
+            <div class="excel-row">
+                <div class="excel-cell col-small">工務区分</div>
+                <div class="excel-cell col-xl merged-5">
+                    <label class="radio-inline"><input type="radio" name="komu_kubun" value="部品"> ○部品</label>
+                    <label class="radio-inline"><input type="radio" name="komu_kubun" value="製品"> ○製品</label>
+                    <label class="radio-inline"><input type="radio" name="komu_kubun" value="海外"> ○海外</label>
+                    <label class="radio-inline"><input type="radio" name="komu_kubun" value="計画"> ○計画</label>
+                </div>
+                <div class="excel-cell col-small">連絡書№</div>
+                <div class="excel-cell col-medium merged-4">
+                    <input type="text" name="renraku_sho_no" class="excel-input">
+                </div>
+                <div class="excel-cell col-medium">返却日</div>
+                <div class="excel-cell col-medium merged-4">
+                    <input type="date" name="henkyaku_bi" class="excel-input">
+                </div>
+            </div>
+            
+            <!-- 行9: 起票部署, 担当者, 返却内容 -->
+            <div class="excel-row">
+                <div class="excel-cell col-small">起票部署</div>
+                <div class="excel-cell col-small merged-3">
+                    <select name="kippu_busho" class="excel-select">
+                        <option value="">▼</option>
+                        <option value="TDK(株)">TDK(株)</option>
+                    </select>
+                </div>
+                <div class="excel-cell col-small">担当者</div>
+                <div class="excel-cell col-small merged-2">
+                    <select name="tantousha" class="excel-select">
+                        <option value="">▼</option>
+                    </select>
+                </div>
+                <div class="excel-cell col-medium">返却内容</div>
+                <div class="excel-cell col-medium merged-4">
+                    <input type="text" name="henkyaku_naiyou" class="excel-input">
+                </div>
+            </div>
+            
+            <!-- 行10: 品番, 工変ランク -->
+            <div class="excel-row">
+                <div class="excel-cell col-small">品番</div>
+                <div class="excel-cell col-medium merged-4">
+                    <input type="text" name="hinban" class="excel-input">
+                </div>
+                <div class="excel-cell col-small">工変ランク</div>
+                <div class="excel-cell col-small merged-2">
+                    <select name="kouhen_rank" class="excel-select">
+                        <option value="">▼</option>
+                    </select>
+                </div>
+                <div class="excel-cell col-medium"></div>
+                <div class="excel-cell col-medium merged-4"></div>
+            </div>
+            
+            <!-- 行11: 品名, 品質カルテ減点対象外 -->
+            <div class="excel-row">
+                <div class="excel-cell col-small">品名</div>
+                <div class="excel-cell col-medium merged-4">
+                    <input type="text" name="hinmei" class="excel-input">
+                </div>
+                <div class="excel-cell col-medium merged-4">品質ｶﾙﾃ減点対象外</div>
+                <div class="excel-cell col-narrow">☑</div>
+                <div class="excel-cell col-medium"></div>
+                <div class="excel-cell col-medium merged-4"></div>
+            </div>
+            
+            <!-- 行12: 工務備考, 客先提出要否, TEL -->
+            <div class="excel-row">
+                <div class="excel-cell col-small">工務備考</div>
+                <div class="excel-cell col-medium merged-4">
+                    <input type="text" name="komu_bikou" class="excel-input">
+                </div>
+                <div class="excel-cell col-medium merged-4">客先提出要否</div>
+                <div class="excel-cell col-xl merged-5">
+                    <label class="radio-inline"><input type="radio" name="kyakusaki_teishutsu_youhi" value="要"> ○要</label>
+                    <label class="radio-inline"><input type="radio" name="kyakusaki_teishutsu_youhi" value="否"> ○否</label>
+                </div>
+                <div class="excel-cell col-medium">TEL</div>
+                <div class="excel-cell col-medium merged-4">
+                    <input type="text" name="tel" class="excel-input">
+                </div>
+            </div>
+            
+            <!-- 行13: 管轄, 特殊工程有無, メール -->
+            <div class="excel-row">
+                <div class="excel-cell col-small">管轄</div>
+                <div class="excel-cell col-xl merged-5">
+                    <label class="radio-inline"><input type="radio" name="kankatsu" value="SW"> ○SW</label>
+                    <label class="radio-inline"><input type="radio" name="kankatsu" value="EL"> ○EL</label>
+                    <label class="radio-inline"><input type="radio" name="kankatsu" value="ME"> ○ME</label>
+                    <label class="radio-inline"><input type="radio" name="kankatsu" value="ELD"> ○ELD</label>
+                </div>
+                <div class="excel-cell col-medium merged-4">特殊工程有無</div>
+                <div class="excel-cell col-xl merged-5">
+                    <label class="radio-inline"><input type="radio" name="tokushu_koutei_umu" value="有"> ○有</label>
+                    <label class="radio-inline"><input type="radio" name="tokushu_koutei_umu" value="無"> ○無</label>
+                </div>
+                <div class="excel-cell col-medium">メール</div>
+                <div class="excel-cell col-medium merged-4">
+                    <input type="email" name="email" class="excel-input">
+                </div>
+            </div>
+        </div>
+        
+        <!-- メインセクションヘッダー -->
+        <div style="display: table; width: 100%; margin-top: 10px;">
+            <div style="display: table-row;">
+                <div class="section-header" style="display: table-cell; width: 20%;">設変</div>
+                <div class="section-header" style="display: table-cell; width: 35%;">変更内容</div>
+                <div class="section-header" style="display: table-cell; width: 25%;">日程管理</div>
+                <div class="section-header" style="display: table-cell; width: 20%;">フリー入力</div>
+            </div>
+        </div>
+        
+        <!-- メインコンテンツ -->
+        <div style="display: table; width: 100%;">
+            <div style="display: table-row;">
+                <!-- 設変セクション -->
+                <div style="display: table-cell; width: 20%; vertical-align: top; border: 1px solid #c0c0c0; padding: 8px;">
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">設変№</div>
+                        <div class="excel-cell col-medium">
+                            <input type="text" name="setsuhen_no" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">設変区分</div>
+                        <div class="excel-cell col-medium">
+                            <select name="setsuhen_kubun" class="excel-select">
+                                <option value="">▼</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">出図予定日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="shutsuzu_yotei_bi" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">出図実績日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="shutsuzu_jisseki_bi" class="excel-input">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 変更内容セクション -->
+                <div style="display: table-cell; width: 35%; vertical-align: top; border: 1px solid #c0c0c0; padding: 8px;">
+                    <div class="checkbox-grid">
+                        <label><input type="checkbox" name="henkou_naiyou" value="設備"> ☑1.設備</label>
+                        <label><input type="checkbox" name="henkou_naiyou" value="検査機器"> ☑2.検査機器</label>
+                        <label><input type="checkbox" name="henkou_naiyou" value="金型"> ☑3.金型</label>
+                        <label><input type="checkbox" name="henkou_naiyou" value="治工具"> ☑4.治工具</label><br>
+                        <label><input type="checkbox" name="henkou_naiyou" value="製造条件"> ☑5.製造条件</label>
+                        <label><input type="checkbox" name="henkou_naiyou" value="工程"> ☑6.工程</label>
+                        <label><input type="checkbox" name="henkou_naiyou" value="製造場所"> ☑7.製造場所</label>
+                        <label><input type="checkbox" name="henkou_naiyou" value="材料"> ☑8.材料</label><br>
+                        <label><input type="checkbox" name="henkou_naiyou" value="副資材"> ☑9.副資材</label>
+                        <label><input type="checkbox" name="henkou_naiyou" value="その他"> ☑10.その他</label>
+                        <label><input type="checkbox" name="henkou_naiyou" value="物流"> ☑11.物流</label>
+                    </div>
+                </div>
+                
+                <!-- 日程管理セクション -->
+                <div style="display: table-cell; width: 25%; vertical-align: top; border: 1px solid #c0c0c0; padding: 8px;">
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">起票日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="kippu_bi" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">工務受付日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="komu_uketsuke_bi" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">品管受付日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="hinkan_uketsuke_bi" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">承認日付</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="shounin_hiduke" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">配布日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="haifu_bi" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">取り消し日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="torikeshi_bi" class="excel-input">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- フリー入力セクション -->
+                <div style="display: table-cell; width: 20%; vertical-align: top; border: 1px solid #c0c0c0; padding: 8px;">
+                    <div class="excel-row">
+                        <div class="excel-cell col-narrow">①</div>
+                        <div class="excel-cell" style="width: calc(100% - 30px);">
+                            <input type="text" name="free_nyuryoku_1" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-narrow">②</div>
+                        <div class="excel-cell" style="width: calc(100% - 30px);">
+                            <input type="text" name="free_nyuryoku_2" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-narrow">③</div>
+                        <div class="excel-cell" style="width: calc(100% - 30px);">
+                            <input type="text" name="free_nyuryoku_3" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-narrow">④</div>
+                        <div class="excel-cell" style="width: calc(100% - 30px);">
+                            <input type="text" name="free_nyuryoku_4" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">備考</div>
+                        <div class="excel-cell" style="width: calc(100% - 60px);">
+                            <textarea name="bikou" class="excel-input" style="height: 30px; resize: none;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 下部詳細セクションヘッダー -->
+        <div style="display: table; width: 100%; margin-top: 10px;">
+            <div style="display: table-row;">
+                <div class="section-header" style="display: table-cell; width: 20%;">部品</div>
+                <div class="section-header" style="display: table-cell; width: 20%;">製品</div>
+                <div class="section-header" style="display: table-cell; width: 20%;">工程確認</div>
+                <div class="section-header" style="display: table-cell; width: 20%;">流動可否</div>
+                <div class="section-header" style="display: table-cell; width: 20%;">初品納入</div>
+            </div>
+        </div>
+        
+        <!-- 下部詳細セクション -->
+        <div style="display: table; width: 100%;">
+            <div style="display: table-row;">
+                <!-- 部品セクション -->
+                <div style="display: table-cell; width: 20%; vertical-align: top; border: 1px solid #c0c0c0; padding: 4px;">
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">評価有無</div>
+                        <div class="excel-cell col-medium">
+                            <label class="radio-inline"><input type="radio" name="buhin_hyouka_umu" value="有"> ○有</label>
+                            <label class="radio-inline"><input type="radio" name="buhin_hyouka_umu" value="無"> ○無</label>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">サンプル</div>
+                        <div class="excel-cell col-small">
+                            <select name="buhin_sample" class="excel-select">
+                                <option value="">▼</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">データ</div>
+                        <div class="excel-cell col-small">
+                            <select name="buhin_data" class="excel-select">
+                                <option value="">▼</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">工程能力</div>
+                        <div class="excel-cell col-small">
+                            <select name="buhin_koutei_nouryoku" class="excel-select">
+                                <option value="">▼</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">試組</div>
+                        <div class="excel-cell col-small">
+                            <select name="buhin_shigumi" class="excel-select">
+                                <option value="">▼</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">試験</div>
+                        <div class="excel-cell col-small">
+                            <select name="buhin_shiken" class="excel-select">
+                                <option value="">▼</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">全型PP</div>
+                        <div class="excel-cell col-small">
+                            <select name="buhin_zenkata_pp" class="excel-select">
+                                <option value="">▼</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 製品セクション -->
+                <div style="display: table-cell; width: 20%; vertical-align: top; border: 1px solid #c0c0c0; padding: 4px;">
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">評価有無</div>
+                        <div class="excel-cell col-medium">
+                            <label class="radio-inline"><input type="radio" name="seihin_hyouka_umu" value="有"> ○有</label>
+                            <label class="radio-inline"><input type="radio" name="seihin_hyouka_umu" value="無"> ○無</label>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">サンプル</div>
+                        <div class="excel-cell col-small">
+                            <select name="seihin_sample" class="excel-select">
+                                <option value="">▼</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">データ</div>
+                        <div class="excel-cell col-small">
+                            <select name="seihin_data" class="excel-select">
+                                <option value="">▼</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">工程能力</div>
+                        <div class="excel-cell col-small">
+                            <select name="seihin_koutei_nouryoku" class="excel-select">
+                                <option value="">▼</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">試組</div>
+                        <div class="excel-cell col-small">
+                            <select name="seihin_shigumi" class="excel-select">
+                                <option value="">▼</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">試験</div>
+                        <div class="excel-cell col-small">
+                            <select name="seihin_shiken" class="excel-select">
+                                <option value="">▼</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 工程確認セクション -->
+                <div style="display: table-cell; width: 20%; vertical-align: top; border: 1px solid #c0c0c0; padding: 4px;">
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">B工程要否</div>
+                        <div class="excel-cell col-medium">
+                            <label class="radio-inline"><input type="radio" name="b_koutei_youhi" value="有"> ○有</label>
+                            <label class="radio-inline"><input type="radio" name="b_koutei_youhi" value="無"> ○無</label>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">旧予定日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="kyuu_yotei_bi" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">旧実施日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="kyuu_jisshi_bi" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">新予定日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="shin_yotei_bi" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">新実施日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="shin_jisshi_bi" class="excel-input">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 流動可否セクション -->
+                <div style="display: table-cell; width: 20%; vertical-align: top; border: 1px solid #c0c0c0; padding: 4px;">
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">流動可否</div>
+                        <div class="excel-cell col-small">
+                            <select name="ryuudou_kahi" class="excel-select">
+                                <option value="">▼</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">提出期限</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="teishutsu_kigen" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">状態</div>
+                        <div class="excel-cell col-small">
+                            <select name="joutai" class="excel-select">
+                                <option value="">▼</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">受領日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="juryou_bi" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">承認日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="ryuudou_shounin_bi" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">仮承認日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="kari_shounin_bi" class="excel-input">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 初品納入セクション -->
+                <div style="display: table-cell; width: 20%; vertical-align: top; border: 1px solid #c0c0c0; padding: 4px;">
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">予定日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="shohin_yotei_bi" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row">
+                        <div class="excel-cell col-small">変更日</div>
+                        <div class="excel-cell col-medium">
+                            <input type="date" name="shohin_henkou_bi" class="excel-input">
+                        </div>
+                    </div>
+                    <div class="excel-row" style="height: 60px;">
+                        <div class="excel-cell" style="vertical-align: top;">変化点<br>納入リスト</div>
+                        <div class="excel-cell">
+                            <textarea name="henkaiten_nounyuu_list" class="excel-input" style="height: 50px; width: 100%;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// フォームバリデーション
+document.querySelector('form').addEventListener('submit', function(e) {
+    const henkatienNo = document.querySelector('input[name="henkaiten_no"]').value.trim();
+    
+    if (!henkatienNo) {
+        alert('変化点№は必須です。');
+        e.preventDefault();
+        return;
+    }
+    
+    if (confirm('登録してもよろしいですか？')) {
+        // 登録処理継続
+    } else {
+        e.preventDefault();
+    }
+});
+</script>
+{% endblock %}
