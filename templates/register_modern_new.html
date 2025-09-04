@@ -236,13 +236,29 @@ textarea:focus {
     margin: 10px 0;
 }
 
+/* 評価グリッド（5カラム） */
+.evaluation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.evaluation-grid .section {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 6px;
+    background: #f9f9f9;
+}
+
 /* ナビゲーション */
 .navigation {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     padding: 20px;
     background: #f8f9fa;
     border-top: 1px solid #dee2e6;
+    gap: 15px;
 }
 
 .btn {
@@ -540,43 +556,232 @@ textarea:focus {
                             <label class="form-label">フリー入力4</label>
                             <input type="text" class="form-input" name="free_nyuryoku_4">
                         </div>
+                        <div class="form-group">
+                            <label class="form-label">備考</label>
+                            <textarea class="form-input" name="bikou" rows="4" placeholder="特記事項、注意点などを記載してください"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <!-- ステップ 3: 備考・最終確認 -->
+            <!-- ステップ 3: 評価・管理 -->
             <div class="step-container" id="step-3">
-                <div class="step-title">ステップ 3: 備考・最終確認</div>
+                <div class="step-title">ステップ 3: 評価・管理</div>
                 
-                <div class="section">
-                    <div class="section-header">備考・メモ</div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">目的内容</label>
-                        <textarea name="mokuteki_naiyou" rows="3" placeholder="目的や背景を記載してください"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">備考</label>
-                        <textarea name="bikou" rows="4" placeholder="特記事項、注意点などを記載してください"></textarea>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <!-- 評価・管理セクション（5カラム） -->
+                <div class="evaluation-grid">
+                    <!-- 部品評価 -->
+                    <div class="section">
+                        <div class="section-header">部品</div>
                         <div class="form-group">
-                            <label class="form-label">最終確認者</label>
-                            <input type="text" class="form-input" name="saishuu_kakuninsha">
+                            <label class="form-label">評価有無</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="buhin_hyouka_umu" value="有"> 有</label>
+                                <label><input type="radio" name="buhin_hyouka_umu" value="無"> 無</label>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">最終確認日</label>
-                            <input type="date" class="form-input" name="saishuu_kakunin_bi">
+                            <label class="form-label">サンプル</label>
+                            <input type="date" class="form-input" name="buhin_sample">
+                            <select class="form-select" name="buhin_sample_joutai">
+                                <option value="">選択</option>
+                                <option value="予定">予定</option>
+                                <option value="完了">完了</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">データ</label>
+                            <input type="date" class="form-input" name="buhin_data">
+                            <select class="form-select" name="buhin_data_joutai">
+                                <option value="">選択</option>
+                                <option value="予定">予定</option>
+                                <option value="完了">完了</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">工程能力</label>
+                            <input type="date" class="form-input" name="buhin_koutei_nouryoku">
+                            <select class="form-select" name="buhin_koutei_nouryoku_joutai">
+                                <option value="">選択</option>
+                                <option value="予定">予定</option>
+                                <option value="完了">完了</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">試組</label>
+                            <input type="date" class="form-input" name="buhin_shigumi">
+                            <select class="form-select" name="buhin_shigumi_joutai">
+                                <option value="">選択</option>
+                                <option value="予定">予定</option>
+                                <option value="完了">完了</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">試験</label>
+                            <input type="date" class="form-input" name="buhin_shiken">
+                            <select class="form-select" name="buhin_shiken_joutai">
+                                <option value="">選択</option>
+                                <option value="予定">予定</option>
+                                <option value="完了">完了</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">全型PP</label>
+                            <input type="date" class="form-input" name="buhin_zenkata_pp">
+                            <select class="form-select" name="buhin_zenkata_pp_joutai">
+                                <option value="">選択</option>
+                                <option value="予定">予定</option>
+                                <option value="完了">完了</option>
+                            </select>
                         </div>
                     </div>
                     
-                    <div class="form-group" style="margin-top: 20px;">
-                        <label style="font-size: 16px;">
-                            <input type="checkbox" required> 
-                            入力内容を確認しました
-                        </label>
+                    <!-- 製品評価 -->
+                    <div class="section">
+                        <div class="section-header">製品</div>
+                        <div class="form-group">
+                            <label class="form-label">評価有無</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="seihin_hyouka_umu" value="有"> 有</label>
+                                <label><input type="radio" name="seihin_hyouka_umu" value="無"> 無</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">サンプル</label>
+                            <input type="date" class="form-input" name="seihin_sample">
+                            <select class="form-select" name="seihin_sample_joutai">
+                                <option value="">選択</option>
+                                <option value="予定">予定</option>
+                                <option value="完了">完了</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">データ</label>
+                            <input type="date" class="form-input" name="seihin_data">
+                            <select class="form-select" name="seihin_data_joutai">
+                                <option value="">選択</option>
+                                <option value="予定">予定</option>
+                                <option value="完了">完了</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">工程能力</label>
+                            <input type="date" class="form-input" name="seihin_koutei_nouryoku">
+                            <select class="form-select" name="seihin_koutei_nouryoku_joutai">
+                                <option value="">選択</option>
+                                <option value="予定">予定</option>
+                                <option value="完了">完了</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">試組</label>
+                            <input type="date" class="form-input" name="seihin_shigumi">
+                            <select class="form-select" name="seihin_shigumi_joutai">
+                                <option value="">選択</option>
+                                <option value="予定">予定</option>
+                                <option value="完了">完了</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">試験</label>
+                            <input type="date" class="form-input" name="seihin_shiken">
+                            <select class="form-select" name="seihin_shiken_joutai">
+                                <option value="">選択</option>
+                                <option value="予定">予定</option>
+                                <option value="完了">完了</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- 工程確認 -->
+                    <div class="section">
+                        <div class="section-header">工程確認</div>
+                        <div class="form-group">
+                            <label class="form-label">B工程要否</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="b_koutei_youhi" value="有"> 有</label>
+                                <label><input type="radio" name="b_koutei_youhi" value="無"> 無</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">旧予定日</label>
+                            <input type="date" class="form-input" name="koutei_kakunin_kyuu_yotei_bi">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">旧実施日</label>
+                            <input type="date" class="form-input" name="koutei_kakunin_kyuu_jisshi_bi">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">新予定日</label>
+                            <input type="date" class="form-input" name="koutei_kakunin_shin_yotei_bi">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">新実施日</label>
+                            <input type="date" class="form-input" name="koutei_kakunin_shin_jisshi_bi">
+                        </div>
+                    </div>
+                    
+                    <!-- 流動可否 -->
+                    <div class="section">
+                        <div class="section-header">流動可否</div>
+                        <div class="form-group">
+                            <label class="form-label">流動可否</label>
+                            <select class="form-select" name="ryuudou_kahi">
+                                <option value="">選択</option>
+                                <option value="可">可</option>
+                                <option value="否">否</option>
+                                <option value="条件付">条件付</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">提出期限</label>
+                            <input type="date" class="form-input" name="ryuudou_kahi_teishutsu_kigen">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">状態</label>
+                            <select class="form-select" name="ryuudou_kahi_joutai">
+                                <option value="">選択</option>
+                                <option value="提出済">提出済</option>
+                                <option value="未提出">未提出</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">受領日</label>
+                            <input type="date" class="form-input" name="ryuudou_kahi_juryou_bi">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">承認日</label>
+                            <input type="date" class="form-input" name="ryuudou_kahi_shounin_bi">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">仮承認日</label>
+                            <input type="date" class="form-input" name="ryuudou_kahi_kari_shounin_bi">
+                        </div>
+                    </div>
+                    
+                    <!-- 初品納入 -->
+                    <div class="section">
+                        <div class="section-header">初品納入</div>
+                        <div class="form-group">
+                            <label class="form-label">予定日</label>
+                            <input type="date" class="form-input" name="shohin_nounyuu_yotei_bi">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">変更日</label>
+                            <input type="date" class="form-input" name="shohin_nounyuu_henkou_bi">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">実績初</label>
+                            <input type="date" class="form-input" name="shohin_nounyuu_jisseki_hatsu">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">実績終</label>
+                            <input type="date" class="form-input" name="shohin_nounyuu_jisseki_owari">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">変化点納入リスト</label>
+                            <textarea class="form-input" name="henkaiten_nounyuu_list" rows="3"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
