@@ -112,6 +112,8 @@ body {
     margin-bottom: 25px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .section-header {
@@ -138,12 +140,14 @@ body {
 
 .form-input, .form-select {
     width: 100%;
+    max-width: 100%;
     padding: 12px 15px;
     border: 2px solid #ced4da;
     border-radius: 6px;
     font-size: 16px;
     transition: all 0.2s;
     background: white;
+    box-sizing: border-box;
 }
 
 .form-input:focus, .form-select:focus {
@@ -155,12 +159,14 @@ body {
 
 textarea {
     width: 100%;
+    max-width: 100%;
     padding: 8px;
     border: 1px solid #ced4da;
     border-radius: 4px;
     font-size: 14px;
     resize: vertical;
     font-family: inherit;
+    box-sizing: border-box;
 }
 
 textarea:focus {
@@ -310,6 +316,7 @@ textarea:focus {
 
 .key-input {
     width: 100%;
+    max-width: 100%;
     padding: 20px 24px;
     font-size: 20px;
     border: 3px solid #e0e0e0;
@@ -317,6 +324,7 @@ textarea:focus {
     text-align: center;
     transition: all 0.3s;
     background: white;
+    box-sizing: border-box;
 }
 
 .key-input:focus {
@@ -368,6 +376,8 @@ textarea:focus {
     margin-bottom: 30px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     border: 1px solid #f0f0f0;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .category-grid {
@@ -381,6 +391,8 @@ textarea:focus {
     border: 2px solid #e3f2fd;
     border-radius: 12px;
     padding: 25px;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .card-title {
@@ -444,6 +456,8 @@ textarea:focus {
     border: 2px solid #e3f2fd;
     border-radius: 12px;
     padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .card-label {
@@ -456,11 +470,13 @@ textarea:focus {
 
 .large-input, .large-select {
     width: 100%;
+    max-width: 100%;
     padding: 16px 20px;
     font-size: 18px;
     border: 2px solid #ddd;
     border-radius: 8px;
     transition: all 0.2s;
+    box-sizing: border-box;
 }
 
 .large-input:focus, .large-select:focus {
@@ -481,6 +497,8 @@ textarea:focus {
     border: 2px solid #e3f2fd;
     border-radius: 12px;
     padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .option-title {
@@ -1169,22 +1187,22 @@ textarea:focus {
                                     <span class="toggle-text">❌ 不要</span>
                                 </label>
                             </div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                                <div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; box-sizing: border-box;">
+                                <div style="box-sizing: border-box;">
                                     <label style="display: block; font-size: 16px; font-weight: 500; margin-bottom: 8px;">旧予定日</label>
-                                    <input type="date" class="large-input" name="koutei_kakunin_kyuu_yotei_bi">
+                                    <input type="date" class="large-input" name="koutei_kakunin_kyuu_yotei_bi" style="width: 100%; max-width: 100%; box-sizing: border-box;">
                                 </div>
-                                <div>
+                                <div style="box-sizing: border-box;">
                                     <label style="display: block; font-size: 16px; font-weight: 500; margin-bottom: 8px;">旧実施日</label>
-                                    <input type="date" class="large-input" name="koutei_kakunin_kyuu_jisshi_bi">
+                                    <input type="date" class="large-input" name="koutei_kakunin_kyuu_jisshi_bi" style="width: 100%; max-width: 100%; box-sizing: border-box;">
                                 </div>
-                                <div>
+                                <div style="box-sizing: border-box;">
                                     <label style="display: block; font-size: 16px; font-weight: 500; margin-bottom: 8px;">新予定日</label>
-                                    <input type="date" class="large-input" name="koutei_kakunin_shin_yotei_bi">
+                                    <input type="date" class="large-input" name="koutei_kakunin_shin_yotei_bi" style="width: 100%; max-width: 100%; box-sizing: border-box;">
                                 </div>
-                                <div>
+                                <div style="box-sizing: border-box;">
                                     <label style="display: block; font-size: 16px; font-weight: 500; margin-bottom: 8px;">新実施日</label>
-                                    <input type="date" class="large-input" name="koutei_kakunin_shin_jisshi_bi">
+                                    <input type="date" class="large-input" name="koutei_kakunin_shin_jisshi_bi" style="width: 100%; max-width: 100%; box-sizing: border-box;">
                                 </div>
                             </div>
                         </div>
@@ -1198,31 +1216,31 @@ textarea:focus {
                                 <option value="否">❌ 流動不可</option>
                                 <option value="条件付">⚠️ 条件付可</option>
                             </select>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                                <div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; box-sizing: border-box;">
+                                <div style="box-sizing: border-box;">
                                     <label style="display: block; font-size: 16px; font-weight: 500; margin-bottom: 8px;">提出期限</label>
-                                    <input type="date" class="large-input" name="ryuudou_kahi_teishutsu_kigen">
+                                    <input type="date" class="large-input" name="ryuudou_kahi_teishutsu_kigen" style="width: 100%; max-width: 100%; box-sizing: border-box;">
                                 </div>
-                                <div>
+                                <div style="box-sizing: border-box;">
                                     <label style="display: block; font-size: 16px; font-weight: 500; margin-bottom: 8px;">提出状態</label>
-                                    <select class="large-select" name="ryuudou_kahi_joutai">
+                                    <select class="large-select" name="ryuudou_kahi_joutai" style="width: 100%; max-width: 100%; box-sizing: border-box;">
                                         <option value="">状態を選択</option>
                                         <option value="提出済">✅ 提出済</option>
                                         <option value="未提出">❌ 未提出</option>
                                     </select>
                                 </div>
-                                <div>
+                                <div style="box-sizing: border-box;">
                                     <label style="display: block; font-size: 16px; font-weight: 500; margin-bottom: 8px;">受領日</label>
-                                    <input type="date" class="large-input" name="ryuudou_kahi_juryou_bi">
+                                    <input type="date" class="large-input" name="ryuudou_kahi_juryou_bi" style="width: 100%; max-width: 100%; box-sizing: border-box;">
                                 </div>
-                                <div>
+                                <div style="box-sizing: border-box;">
                                     <label style="display: block; font-size: 16px; font-weight: 500; margin-bottom: 8px;">承認日</label>
-                                    <input type="date" class="large-input" name="ryuudou_kahi_shounin_bi">
+                                    <input type="date" class="large-input" name="ryuudou_kahi_shounin_bi" style="width: 100%; max-width: 100%; box-sizing: border-box;">
                                 </div>
                             </div>
-                            <div style="margin-top: 15px;">
+                            <div style="margin-top: 15px; box-sizing: border-box;">
                                 <label style="display: block; font-size: 16px; font-weight: 500; margin-bottom: 8px;">仮承認日</label>
-                                <input type="date" class="large-input" name="ryuudou_kahi_kari_shounin_bi">
+                                <input type="date" class="large-input" name="ryuudou_kahi_kari_shounin_bi" style="width: 100%; max-width: 100%; box-sizing: border-box;">
                             </div>
                         </div>
                     </div>
