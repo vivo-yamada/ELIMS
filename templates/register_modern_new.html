@@ -1329,19 +1329,57 @@ function changeStep(direction) {
 }
 
 // フォーム送信バリデーション
-document.getElementById('mainForm').addEventListener('submit', function(e) {
-    const henkatienNo = document.querySelector('input[name="henkaiten_no"]').value.trim();
+document.getElementById('mainForm').addEventListener('submit', async function(e) {
+    e.preventDefault(); // デフォルトの送信を防ぐ
+    
+    const henkatienNoInput = document.querySelector('input[name="henkaiten_no"]');
+    const henkatienNo = henkatienNoInput.value.trim();
     
     if (!henkatienNo) {
         alert('変化点Noは必須です。');
-        e.preventDefault();
         return;
     }
     
-    if (confirm('登録してもよろしいですか？')) {
-        // 登録処理継続
-    } else {
-        e.preventDefault();
+    if (!confirm('登録してもよろしいですか？')) {
+        return;
+    }
+    
+    try {
+        // 重複チェック
+        const checkResponse = await fetch('/api/check_duplicate_no', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ henkaiten_no: henkatienNo })
+        });
+        
+        const checkData = await checkResponse.json();
+        
+        if (checkData.is_duplicate) {
+            // 重複していた場合、新しい番号に更新
+            henkatienNoInput.value = checkData.new_henkaiten_no;
+            alert(checkData.message);
+        }
+        
+        // フォームデータを送信
+        const formData = new FormData(this);
+        const response = await fetch('/register', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert(result.message);
+            // フォームをリセットまたはリダイレクト
+            window.location.reload();
+        } else {
+            alert('エラー: ' + (result.error || '登録に失敗しました'));
+        }
+    } catch (error) {
+        alert('登録中にエラーが発生しました: ' + error.message);
     }
 });
 
