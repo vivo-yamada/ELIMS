@@ -1346,17 +1346,19 @@ document.getElementById('mainForm').addEventListener('submit', function(e) {
 });
 
 // 付番ボタンの機能
-document.querySelector('.generate-btn').addEventListener('click', function() {
-    const now = new Date();
-    const timestamp = now.getFullYear().toString().slice(-2) + 
-                     String(now.getMonth() + 1).padStart(2, '0') + 
-                     String(now.getDate()).padStart(2, '0') + 
-                     String(now.getHours()).padStart(2, '0') + 
-                     String(now.getMinutes()).padStart(2, '0');
-    
-    const henkatienNo = document.querySelector('input[name="henkaiten_no"]');
-    if (!henkatienNo.value.trim()) {
-        henkatienNo.value = 'HPC' + timestamp;
+document.querySelector('.generate-btn').addEventListener('click', async function() {
+    try {
+        const response = await fetch('/api/generate_henkaiten_no');
+        const data = await response.json();
+        
+        if (data.henkaiten_no) {
+            const henkatienNo = document.querySelector('input[name="henkaiten_no"]');
+            henkatienNo.value = data.henkaiten_no;
+        } else if (data.error) {
+            alert('変化点Noの生成中にエラーが発生しました: ' + data.error);
+        }
+    } catch (error) {
+        alert('変化点Noの生成中にエラーが発生しました: ' + error.message);
     }
 });
 </script>

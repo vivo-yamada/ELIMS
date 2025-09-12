@@ -22,6 +22,38 @@ def working():
     """動作確認版"""
     return render_template('test_working.html')
 
+@app.route('/api/generate_henkaiten_no', methods=['GET'])
+def generate_henkaiten_no():
+    """変化点No.の自動生成API"""
+    try:
+        # 現在の年を取得（2桁）
+        current_year = datetime.now().strftime('%y')
+        
+        # データベースから同年の最大値を取得
+        query = f"""
+            SELECT MAX(CAST(SUBSTRING([変化点NO], 7, 4) AS INT)) as max_num
+            FROM [TC_変化点管理台帳]
+            WHERE [変化点NO] LIKE 'HPC{current_year}-%'
+        """
+        result = db_manager.execute_query(query)
+        
+        # 次の番号を決定
+        if result and len(result) > 0 and result[0].get('max_num') is not None:
+            next_num = result[0]['max_num'] + 1
+        else:
+            next_num = 1
+            
+        # 変化点No.を生成（HPC + 年2桁 + - + 4桁連番）
+        henkaiten_no = f"HPC{current_year}-{next_num:04d}"
+        
+        return jsonify({'henkaiten_no': henkaiten_no})
+        
+    except Exception as e:
+        print(f"Error generating henkaiten_no: {str(e)}")
+        import traceback
+        print(f"Traceback: {traceback.format_exc()}")
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """変化点管理台帳の登録処理"""
