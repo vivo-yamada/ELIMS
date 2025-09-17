@@ -680,6 +680,9 @@ textarea:focus {
     </div>
     
     <form method="POST" action="{{ url_for('register') }}" id="mainForm">
+        <!-- 素性フィールド（非表示・工程変更固定） -->
+        <input type="hidden" name="sosei" value="工程変更">
+
         <div class="main-content">
             <!-- ステップ 1: 基本情報 -->
             <div class="step-container active" id="step-1">

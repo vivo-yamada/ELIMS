@@ -110,35 +110,37 @@ def register():
             # フォームデータを取得
             form_data = request.form.to_dict()
             henkaiten_no = form_data.get('henkaiten_no')
-            
+            sosei = form_data.get('sosei', '工程変更')  # 素性フィールドを取得（デフォルト値：工程変更）
+
             if not henkaiten_no:
                 return jsonify({'error': '変化点Noは必須です。'}), 400
-            
+
             # IDの最大値を取得
             id_query = "SELECT MAX([ID]) as max_id FROM [TC_変化点管理台帳]"
             id_result = db_manager.execute_query(id_query)
-            
+
             if id_result and len(id_result) > 0 and id_result[0].get('max_id') is not None:
                 next_id = id_result[0]['max_id'] + 1
             else:
                 next_id = 1
-            
+
             # 現在時刻を取得
             now = datetime.now()
-            
-            # 簡略化されたINSERTクエリ（IDと変化点Noのみ）
+
+            # 簡略化されたINSERTクエリ（ID、変化点No、素性を含む）
             insert_query = """
             INSERT INTO [TC_変化点管理台帳] (
-                [ID], [変化点NO], [入力時刻]
+                [ID], [変化点NO], [素性], [入力時刻]
             ) VALUES (
-                %s, %s, %s
+                %s, %s, %s, %s
             )
             """
-            
-            # パラメータを準備（ID、変化点No、入力時刻のみ）
+
+            # パラメータを準備（ID、変化点No、素性、入力時刻）
             params = (
                 next_id,
                 henkaiten_no,
+                sosei,
                 now
             )
             

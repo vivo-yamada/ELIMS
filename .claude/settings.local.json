@@ -6,7 +6,8 @@
       "Bash(pip install:*)",
       "Bash(python:*)",
       "Bash(sudo apt-get:*)",
-      "Bash(sudo apt-get install:*)"
+      "Bash(sudo apt-get install:*)",
+      "Bash(npm start)"
     ],
     "deny": [],
     "ask": []
