@@ -693,7 +693,7 @@ textarea:focus {
                     <div class="key-inputs">
                         <div class="key-input-group">
                             <label class="key-label">工務受付No</label>
-                            <input type="text" class="key-input" name="komu_uketsuke_no" placeholder="例: K2025-001">
+                            <input type="text" class="key-input" name="受付No" placeholder="例: K2025-001" required>
                         </div>
                         <div class="key-input-group">
                             <label class="key-label">変化点No</label>
@@ -713,19 +713,19 @@ textarea:focus {
                             <h4 class="card-title">工務区分</h4>
                             <div class="large-radio-group">
                                 <label class="large-radio-item">
-                                    <input type="radio" name="komu_kubun" value="部品">
+                                    <input type="radio" name="KH工務区分" value="1" required>
                                     <span class="radio-text">🔧 部品</span>
                                 </label>
                                 <label class="large-radio-item">
-                                    <input type="radio" name="komu_kubun" value="製品">
+                                    <input type="radio" name="KH工務区分" value="2">
                                     <span class="radio-text">📦 製品</span>
                                 </label>
                                 <label class="large-radio-item">
-                                    <input type="radio" name="komu_kubun" value="海外">
+                                    <input type="radio" name="KH工務区分" value="3">
                                     <span class="radio-text">🌏 海外</span>
                                 </label>
                                 <label class="large-radio-item">
-                                    <input type="radio" name="komu_kubun" value="計画">
+                                    <input type="radio" name="KH工務区分" value="4">
                                     <span class="radio-text">📋 計画</span>
                                 </label>
                             </div>
@@ -735,19 +735,19 @@ textarea:focus {
                             <h4 class="card-title">管轄</h4>
                             <div class="large-radio-group">
                                 <label class="large-radio-item">
-                                    <input type="radio" name="kankatsu" value="SW">
+                                    <input type="radio" name="KH管轄" value="1" required>
                                     <span class="radio-text">💻 SW</span>
                                 </label>
                                 <label class="large-radio-item">
-                                    <input type="radio" name="kankatsu" value="EL">
+                                    <input type="radio" name="KH管轄" value="2">
                                     <span class="radio-text">⚡ EL</span>
                                 </label>
                                 <label class="large-radio-item">
-                                    <input type="radio" name="kankatsu" value="ME">
+                                    <input type="radio" name="KH管轄" value="3">
                                     <span class="radio-text">⚙️ ME</span>
                                 </label>
                                 <label class="large-radio-item">
-                                    <input type="radio" name="kankatsu" value="ELD">
+                                    <input type="radio" name="KH管轄" value="4">
                                     <span class="radio-text">🔌 ELD</span>
                                 </label>
                             </div>
@@ -785,8 +785,12 @@ textarea:focus {
                             </select>
                         </div>
                         <div class="input-card">
+                            <label class="card-label">起票部署コード</label>
+                            <input type="text" class="large-input" name="KH起票部署CODE" placeholder="部署コードを入力">
+                        </div>
+                        <div class="input-card">
                             <label class="card-label">起票部署</label>
-                            <select name="kippu_busho" class="large-select">
+                            <select name="起票部署" class="large-select">
                                 <option value="">部署を選択</option>
                                 <option value="TDK(株)">TDK(株)</option>
                             </select>

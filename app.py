@@ -112,6 +112,13 @@ def register():
             henkaiten_no = form_data.get('henkaiten_no')
             sosei = form_data.get('sosei', '工程変更')  # 素性フィールドを取得（デフォルト値：工程変更）
 
+            # 新しいフィールドを取得
+            uketsuke_no = form_data.get('受付No')
+            kh_komu_kubun = form_data.get('KH工務区分')
+            kh_kankatsu = form_data.get('KH管轄')
+            kh_kihyo_busho_code = form_data.get('KH起票部署CODE')
+            kihyo_busho = form_data.get('起票部署')
+
             if not henkaiten_no:
                 return jsonify({'error': '変化点Noは必須です。'}), 400
 
@@ -127,20 +134,27 @@ def register():
             # 現在時刻を取得
             now = datetime.now()
 
-            # 簡略化されたINSERTクエリ（ID、変化点No、素性を含む）
+            # 更新されたINSERTクエリ
             insert_query = """
             INSERT INTO [TC_変化点管理台帳] (
-                [ID], [変化点NO], [素性], [入力時刻]
+                [ID], [変化点NO], [素性], [受付No],
+                [KH工務区分], [KH管轄], [KH起票部署CODE], [起票部署],
+                [入力時刻]
             ) VALUES (
-                %s, %s, %s, %s
+                %s, %s, %s, %s, %s, %s, %s, %s, %s
             )
             """
 
-            # パラメータを準備（ID、変化点No、素性、入力時刻）
+            # パラメータを準備
             params = (
                 next_id,
                 henkaiten_no,
                 sosei,
+                uketsuke_no,
+                kh_komu_kubun,
+                kh_kankatsu,
+                kh_kihyo_busho_code,
+                kihyo_busho,
                 now
             )
             
