@@ -118,6 +118,8 @@ def register():
             kh_kankatsu = form_data.get('KH管轄')
             kh_kihyo_busho_code = form_data.get('KH起票部署CODE')
             kihyo_busho = form_data.get('起票部署')
+            kh_hinban = form_data.get('hinban')  # KH品番を取得
+            hinmei = form_data.get('hinmei')  # 品名を取得
 
             if not henkaiten_no:
                 return jsonify({'error': '変化点Noは必須です。'}), 400
@@ -139,9 +141,9 @@ def register():
             INSERT INTO [TC_変化点管理台帳] (
                 [ID], [変化点NO], [素性], [受付No],
                 [KH工務区分], [KH管轄], [KH起票部署CODE], [起票部署],
-                [入力時刻]
+                [KH品番], [KH品名], [入力時刻]
             ) VALUES (
-                %s, %s, %s, %s, %s, %s, %s, %s, %s
+                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
             )
             """
 
@@ -155,6 +157,8 @@ def register():
                 kh_kankatsu,
                 kh_kihyo_busho_code,
                 kihyo_busho,
+                kh_hinban,
+                hinmei,
                 now
             )
             

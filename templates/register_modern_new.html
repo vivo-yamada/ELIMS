@@ -693,7 +693,7 @@ textarea:focus {
                     <div class="key-inputs">
                         <div class="key-input-group">
                             <label class="key-label">工務受付No</label>
-                            <input type="text" class="key-input" name="受付No" placeholder="例: K2025-001" required>
+                            <input type="text" class="key-input" name="受付No" placeholder="例: K2025-001">
                         </div>
                         <div class="key-input-group">
                             <label class="key-label">変化点No</label>
@@ -713,7 +713,7 @@ textarea:focus {
                             <h4 class="card-title">工務区分</h4>
                             <div class="large-radio-group">
                                 <label class="large-radio-item">
-                                    <input type="radio" name="KH工務区分" value="1" required>
+                                    <input type="radio" name="KH工務区分" value="1">
                                     <span class="radio-text">🔧 部品</span>
                                 </label>
                                 <label class="large-radio-item">
@@ -735,7 +735,7 @@ textarea:focus {
                             <h4 class="card-title">管轄</h4>
                             <div class="large-radio-group">
                                 <label class="large-radio-item">
-                                    <input type="radio" name="KH管轄" value="1" required>
+                                    <input type="radio" name="KH管轄" value="1">
                                     <span class="radio-text">💻 SW</span>
                                 </label>
                                 <label class="large-radio-item">
@@ -1338,15 +1338,25 @@ function changeStep(direction) {
 // フォーム送信バリデーション
 document.getElementById('mainForm').addEventListener('submit', async function(e) {
     e.preventDefault(); // デフォルトの送信を防ぐ
-    
-    const henkatienNoInput = document.querySelector('input[name="henkaiten_no"]');
-    const henkatienNo = henkatienNoInput.value.trim();
-    
-    if (!henkatienNo) {
-        alert('変化点Noは必須です。');
+
+    // ステップ3でない場合は、ステップ3に移動
+    if (currentStep !== totalSteps) {
+        // 全てのステップを表示して検証を行う
+        changeStep(totalSteps - currentStep);
         return;
     }
-    
+
+    const henkatienNoInput = document.querySelector('input[name="henkaiten_no"]');
+    const henkatienNo = henkatienNoInput.value.trim();
+
+    if (!henkatienNo) {
+        alert('変化点Noは必須です。');
+        // ステップ1に戻る
+        changeStep(1 - currentStep);
+        henkatienNoInput.focus();
+        return;
+    }
+
     if (!confirm('登録してもよろしいですか？')) {
         return;
     }
