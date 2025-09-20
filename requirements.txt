@@ -1,0 +1,5 @@
+flask
+pymssql
+pandas
+openpyxl
+sqlalchemy
