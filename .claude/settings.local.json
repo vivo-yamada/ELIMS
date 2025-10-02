@@ -17,5 +17,9 @@
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "microsoft_learn_mcp"
+  ],
+  "enableAllProjectMcpServers": true
 }
