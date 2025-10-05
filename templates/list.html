@@ -101,18 +101,19 @@
 
     <div class="container-fluid">
         <div class="main-card">
-            <h1 class="page-title">
-                <i class="bi bi-list-ul"></i> 工程変更一覧
-            </h1>
-
-            <!-- 操作ボタン -->
-            <div class="mb-3">
-                <button class="btn btn-primary" onclick="location.href='/register'">
-                    <i class="bi bi-plus-circle"></i> 新規登録
-                </button>
-                <button class="btn btn-secondary" onclick="printList()">
-                    <i class="bi bi-printer"></i> 印刷
-                </button>
+            <div class="d-flex justify-content-between align-items-center mb-3 pb-2" style="border-bottom: 3px solid #667eea;">
+                <h1 class="page-title mb-0" style="border-bottom: none;">
+                    <i class="bi bi-list-ul"></i> 工程変更一覧
+                </h1>
+                <!-- 操作ボタン -->
+                <div>
+                    <button class="btn btn-primary" onclick="location.href='/register'">
+                        <i class="bi bi-plus-circle"></i> 新規登録
+                    </button>
+                    <button class="btn btn-secondary" onclick="printList()">
+                        <i class="bi bi-printer"></i> 印刷
+                    </button>
+                </div>
             </div>
 
             <!-- フィルタセクション -->
@@ -379,9 +380,21 @@
                     }
                 ],
                 order: [[20, 'desc']], // 受付日の降順
-                pageLength: 50,
-                lengthMenu: [[25, 50, 100], [25, 50, 100]],
-                dom: '<"row"<"col-sm-6"l><"col-sm-6"f>>rtip'
+                pageLength: 10,
+                lengthMenu: [[5, 10, 20], [5, 10, 20]],
+                dom: 'rt<"row"<"col-sm-6"i><"col-sm-6"p>><"row"<"col-sm-12"l>>',
+                language: {
+                    info: "全 _TOTAL_ 件中 _START_ から _END_ まで表示",
+                    infoEmpty: "0件中0から0まで表示",
+                    infoFiltered: "(全 _MAX_ 件からフィルタ)",
+                    lengthMenu: "_MENU_ 件表示",
+                    paginate: {
+                        first: "最初",
+                        last: "最後",
+                        next: "次へ",
+                        previous: "前へ"
+                    }
+                }
             });
 
             // 行のダブルクリックイベント
