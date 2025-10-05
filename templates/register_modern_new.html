@@ -1284,6 +1284,7 @@ textarea:focus {
         
         <!-- ナビゲーション -->
         <div class="navigation">
+            <button type="button" class="btn btn-secondary" onclick="confirmBackToList()">一覧に戻る</button>
             <button type="button" class="btn btn-prev" id="prevBtn" onclick="changeStep(-1)" style="display: none;">← 戻る</button>
             <button type="button" class="btn btn-next" id="nextBtn" onclick="changeStep(1)">次へ →</button>
             <button type="submit" class="btn btn-submit" id="submitBtn" style="display: none;">登録実行</button>
@@ -1333,6 +1334,29 @@ function changeStep(direction) {
     
     // ページの先頭に即座に移動
     window.scrollTo(0, 0);
+}
+
+// 一覧に戻る際の確認
+function confirmBackToList() {
+    const form = document.getElementById('mainForm');
+    const formData = new FormData(form);
+    let hasInput = false;
+
+    // フォームに何か入力されているかチェック
+    for (let [key, value] of formData.entries()) {
+        if (value && value.toString().trim() !== '') {
+            hasInput = true;
+            break;
+        }
+    }
+
+    if (hasInput) {
+        if (confirm('入力内容が失われますが、一覧画面に戻りますか？')) {
+            window.location.href = '{{ url_for("list_page") }}';
+        }
+    } else {
+        window.location.href = '{{ url_for("list_page") }}';
+    }
 }
 
 // フォーム送信バリデーション
