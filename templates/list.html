@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f8faff 0%, #e8f2ff 100%);
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
@@ -17,18 +17,18 @@
             padding: 20px;
         }
         .main-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.1);
             padding: 30px;
             margin-top: 20px;
         }
         .page-title {
-            color: #333;
+            color: #1976d2;
             font-weight: bold;
             margin-bottom: 30px;
             padding-bottom: 10px;
-            border-bottom: 3px solid #667eea;
+            border-bottom: 3px solid #2196f3;
         }
         .filter-section {
             background: #f8f9fa;
@@ -37,13 +37,13 @@
             margin-bottom: 30px;
         }
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
             border: none;
             transition: transform 0.2s;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
         }
         .table-container {
             overflow-x: auto;
@@ -52,7 +52,7 @@
             width: 100% !important;
         }
         .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%) !important;
             border: none !important;
             color: white !important;
         }
@@ -72,7 +72,7 @@
             width: 50px;
             height: 50px;
             border: 5px solid #f3f3f3;
-            border-top: 5px solid #667eea;
+            border-top: 5px solid #2196f3;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -89,7 +89,7 @@
             font-size: 0.875rem;
         }
         .table-hover tbody tr:hover {
-            background-color: rgba(102, 126, 234, 0.1);
+            background-color: rgba(33, 150, 243, 0.1);
             cursor: pointer;
         }
     </style>
@@ -101,7 +101,7 @@
 
     <div class="container-fluid">
         <div class="main-card">
-            <div class="d-flex justify-content-between align-items-center mb-3 pb-2" style="border-bottom: 3px solid #667eea;">
+            <div class="d-flex justify-content-between align-items-center mb-3 pb-2" style="border-bottom: 3px solid #2196f3;">
                 <h1 class="page-title mb-0" style="border-bottom: none;">
                     <i class="bi bi-list-ul"></i> 工程変更一覧
                 </h1>
@@ -109,9 +109,6 @@
                 <div>
                     <button class="btn btn-primary" onclick="location.href='/register'">
                         <i class="bi bi-plus-circle"></i> 新規登録
-                    </button>
-                    <button class="btn btn-secondary" onclick="printList()">
-                        <i class="bi bi-printer"></i> 印刷
                     </button>
                 </div>
             </div>
@@ -464,10 +461,6 @@
                     console.error('Delete error:', error);
                 }
             });
-        }
-
-        function printList() {
-            window.print();
         }
 
         function showLoading(show) {
